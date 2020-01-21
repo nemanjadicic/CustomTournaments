@@ -9,6 +9,38 @@ namespace CustomTournamentsUI.ViewModels
 {
     public class ShellViewModel : Conductor<object>
     {
+        public IScreen CurrentView { get; set; }
 
+
+
+        public ShellViewModel()
+        {
+            CurrentView = new HomeViewModel();
+            ActivateItem(CurrentView);
+        }
+
+
+
+        public void LoadHomeView()
+        {
+            CurrentView = new HomeViewModel();
+            ActivateItem(CurrentView);
+        }
+
+
+
+        public void LoadCreateTournamentView()
+        {
+            CurrentView = new CreateTournamentViewModel();
+            ActivateItem(CurrentView);
+        }
+
+
+
+        public void LoadCreateTeamView()
+        {
+            CurrentView = new CreateTeamViewModel();
+            ActivateItem(CurrentView);
+        }
     }
 }

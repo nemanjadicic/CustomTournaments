@@ -10,23 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CustomTournamentsUI.Views
 {
     /// <summary>
-    /// Interaction logic for ShellView.xaml
+    /// Interaction logic for LeagueView.xaml
     /// </summary>
-    public partial class ShellView : Window
+    public partial class LeagueView : UserControl
     {
-        public ShellView()
+        public LeagueView()
         {
             InitializeComponent();
-        }
-
-        private void ExitButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

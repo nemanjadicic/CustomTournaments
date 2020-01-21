@@ -15,18 +15,13 @@ using System.Windows.Shapes;
 namespace CustomTournamentsUI.Views
 {
     /// <summary>
-    /// Interaction logic for ShellView.xaml
+    /// Interaction logic for EnterResultView.xaml
     /// </summary>
-    public partial class ShellView : Window
+    public partial class EnterResultView : Window
     {
-        public ShellView()
+        public EnterResultView()
         {
             InitializeComponent();
-        }
-
-        private void ExitButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }
