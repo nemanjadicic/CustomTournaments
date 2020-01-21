@@ -4,9 +4,68 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CustomTournamentsUI.Views"
-             mc:Ignorable="d" Background="AliceBlue"
+             mc:Ignorable="d" Background="AliceBlue" FontSize="18"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+
+    <StackPanel >
+
+        <!-- title -->
+        <TextBlock Text="Create Prize" FontSize="36" TextAlignment="Left" 
+                   Margin="0,0,0,40" FontWeight="SemiBold" FontStyle="Oblique"
+                   Foreground="Blue"/>
+
+
+
+        <Grid Margin="200, 80, 200, 20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.5*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- row 1 -->
+            <TextBlock Text="Place Number:" Margin="5" FontWeight ="Regular"
+                                       Grid.Row="0" Grid.Column="0"  />
+            <TextBox x:Name="PlaceNumberEntry" Grid.Row="0" Grid.Column="1" Margin="0,5,3,0" 
+                     Padding="2" TextAlignment="Center"/>
+
+            <!-- row 2 -->
+            <TextBlock Text="Place Name:" Margin="5" FontWeight ="Regular"
+                                       Grid.Row="1" Grid.Column="0"  />
+            <TextBox x:Name="PlaceNameEntry" Grid.Row="1" Grid.Column="1" Margin="0,5,3,0" 
+                     Padding="2" TextAlignment="Center"/>
+
+            <!-- row 3 -->
+            <TextBlock Text="Prize Amount:" Margin="5" FontWeight ="Regular"
+                                       Grid.Row="2" Grid.Column="0"  />
+            <TextBox x:Name="PrizeAmountEntry" Grid.Row="2" Grid.Column="1" Margin="0,5,3,0" 
+                     Padding="2" TextAlignment="Center"/>
+
+        </Grid>
+
+        <!-- buttons -->
+        <Grid Margin="200,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="GoBack" Content="Go Back" MinHeight="40" MaxWidth="120" Grid.Column="0" />
+
+            <Button x:Name="CreatePrize" Content="Create Prize" MaxWidth="120"
+                    Grid.Column="1" IsEnabled="{Binding CanCreatePrize}"/>
+
+        </Grid>
+
+        <!-- error message -->
+        <TextBlock Text="{Binding ErrorMessage}" FontSize="14" Foreground="Red" Margin="200, 20" />
+
+    </StackPanel>
+
 </UserControl>

@@ -9,6 +9,16 @@ namespace CustomTournamentsUI.ViewModels
 {
     public class CreateTournamentViewModel : Screen
     {
-
+        public void CreateNewTeam()
+        {
+            var conductor = Parent as IConductor;
+            conductor.ActivateItem(new CreateTeamViewModel());
+        }
+        
+        public void CreatePrize()
+        {
+            var conductor = Parent as IConductor;
+            conductor.ActivateItem(new CreatePrizeViewModel());
+        }
     }
 }
