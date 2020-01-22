@@ -10,7 +10,7 @@ namespace CustomTournamentsLibrary.Models
     {
         public int Id { get; set; }
         public string TeamName { get; set; }
-        public List<PlayerModel> TeamMembers { get; set; }
+        public List<PlayerModel> TeamMembers { get; set; } = new List<PlayerModel>();
 
 
 

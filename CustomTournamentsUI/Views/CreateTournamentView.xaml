@@ -40,7 +40,7 @@
                     </Button>
                 </Grid>
 
-                <ComboBox x:Name="AvailableTeamsList" SelectedItem="{Binding SelectedAvailableTeam}" />
+                <ComboBox x:Name="AvailableTeams" SelectedItem="{Binding SelectedAvailableTeam}" />
 
                 <Button x:Name="AddTeamToTournament" Content="Add Team" Margin="100,5,100,3" Grid.Column="0" MinHeight="35" />
 
@@ -81,7 +81,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <ListBox x:Name="TournamentTeamsList" Grid.Column="0" Margin="0,2,0,5" 
+                    <ListBox x:Name="TournamentTeams" Grid.Column="0" Margin="0,2,0,5" 
                              MinHeight="120" ScrollViewer.VerticalScrollBarVisibility="Visible"
                              SelectedItem="{Binding SelectedTournamentTeam}">
 
@@ -105,7 +105,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <ListBox x:Name="TournamentPrizesList" Grid.Column="0" Margin="0,2,0,5" 
+                    <ListBox x:Name="TournamentPrizes" Grid.Column="0" Margin="0,2,0,5" 
                              MinHeight="120" ScrollViewer.VerticalScrollBarVisibility="Visible" 
                              SelectedItem="{Binding SelectedPrize}">
 
@@ -126,8 +126,18 @@
         </Grid>
 
         <!-- Create Tournament Button -->
-        <Button x:Name="CreateTournament" Content="Create Tournament" FontSize="28" FontWeight="SemiBold"
-                        Margin="430,10,70,0" Grid.Column="1" MinHeight="60" IsEnabled="{Binding CanCreateTournament}" />
+        <Grid Margin="0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.1*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Text="{Binding ErrorMessage}" Margin="20,20,20,20" 
+                       TextWrapping="Wrap" FontSize="12" Foreground="Red"/>
+
+            <Button x:Name="CreateTournament" Content="Create Tournament" FontSize="28" FontWeight="SemiBold"
+                       Margin="65,10,60,10" Grid.Column="1" MinHeight="50" IsEnabled="{Binding CanCreateTournament}" />
+        </Grid>
 
     </StackPanel>
 

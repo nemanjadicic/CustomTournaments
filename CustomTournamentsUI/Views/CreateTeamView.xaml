@@ -27,7 +27,7 @@
 
                 <!-- Select Team Member -->
                 <TextBlock Text="Select Player:" Margin="0,20,0,0" />
-                <ComboBox x:Name="AvailablePlayersList" Margin="0,2,30,5" 
+                <ComboBox x:Name="AvailablePlayers" Margin="0,2,30,5" 
                           SelectedItem="{Binding SelectedPlayer}" >
 
                     <ComboBox.ItemTemplate>
@@ -39,7 +39,7 @@
                 </ComboBox>
 
                 <!-- Add Player Button-->
-                <Button x:Name="AddPlayerToTeam" Content="Add Member" MinHeight="35" Margin="60,5,100,20" 
+                <Button x:Name="AddPlayer" Content="Add Player" MinHeight="35" Margin="60,5,100,20" 
                         MaxWidth="150"/>
 
                 <!-- GroupBox -->
@@ -70,8 +70,8 @@
 
                         </Grid>
 
-                        <Button x:Name="CreateMember" Content="Create Member" FontWeight="Regular" 
-                               Margin="95,10" MinHeight="35" IsEnabled="{Binding CanCreateMember}" />
+                        <Button x:Name="CreatePlayer" Content="Create Player" FontWeight="Regular" 
+                               Margin="95,10" MinHeight="35" IsEnabled="{Binding CanCreatePlayer}" />
 
                     </StackPanel>
                 </GroupBox>
@@ -84,9 +84,8 @@
                 <TextBlock Text="Team Members:" />
 
                 <!-- teamMembersList -->
-                <ListBox x:Name="TeamMembersList" MinHeight="200" Margin="0,2,0,10" 
-                         ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                         SelectedItem="{Binding SelectedMember}" >
+                <ListBox x:Name="TeamMembers" MinHeight="200" Margin="0,2,0,10" ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                         HorizontalContentAlignment="Center" SelectedItem="{Binding SelectedMember}" >
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -97,14 +96,14 @@
                 </ListBox>
 
                 <!-- Remove Selected Member Button -->
-                <Button x:Name="RemoveSelectedTeamMember" HorizontalAlignment="Center" 
+                <Button x:Name="RemoveSelectedMember" HorizontalAlignment="Center" 
                         Margin="0,0,0,20" MinWidth="150" MinHeight="35" Content="Remove Selected" />
 
                 <!-- Create Team Button -->
-                <Button x:Name="CreateTeam" Content="Create Team" Margin="50,20,50,5" FontSize="28" 
+                <Button x:Name="CreateTeam" Content="Create Team" Margin="50,10,50,10" FontSize="28" 
                         FontWeight="SemiBold" MinHeight="60" IsEnabled="{Binding CanCreateTeam}" />
 
-                <TextBlock Text="{Binding TeamErrorMessage}" FontSize="14" Foreground="Red" />
+                <TextBlock Text="{Binding ErrorMessage}" FontSize="12" Foreground="Red" TextWrapping="Wrap"/>
 
             </StackPanel>
         </Grid>

@@ -133,7 +133,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CustomTournamentsLibrary\CustomTournamentsLibrary.csproj">
+      <Project>{4C8E0111-38EE-4D62-AFB2-C199690D2AB7}</Project>
+      <Name>CustomTournamentsLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\CreatePrizeView.xaml">
       <SubType>Designer</SubType>

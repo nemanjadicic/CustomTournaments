@@ -9,7 +9,7 @@ namespace CustomTournamentsUI.ViewModels
 {
     public class HomeViewModel : Screen
     {
-        //          Backing fields
+        //                  BACKING FIELDS
         private BindableCollection<TournamentModel> _existingTournaments;
         private TournamentModel _selectedTournament;
         private bool _canLoadTournament;
@@ -18,7 +18,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //          Properties
+        //                  PROPERTIES
         public BindableCollection<TournamentModel> ExistingTournaments
         {
             get { return _existingTournaments; }
@@ -61,7 +61,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //          Methods and constructor
+        //                  METHODS AND CONSTRUCTOR
         public void LoadTournament()
         {
             //TournamentModel tournament = SelectedTournament;

@@ -9,6 +9,9 @@ namespace CustomTournamentsUI.ViewModels
 {
     public class CreatePrizeViewModel : Screen
     {
+        public CreatePrizeViewModel(CreateTournamentViewModel previousView)
+        {
 
+        }
     }
 }
