@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[SP_InsertNewPlayer]
-	@Id int = 0 OUTPUT,
-	@FirstName NVARCHAR(100),
-	@LastName NVARCHAR(100)
+	@Id int = 0 output,
+	@FirstName nvarchar(100),
+	@LastName nvarchar(100)
 
 AS
 BEGIN

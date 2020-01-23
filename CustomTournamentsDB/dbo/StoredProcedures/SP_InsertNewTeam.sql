@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[SP_InsertNewTeam]
-	@Id int = 0 OUTPUT,
-	@TeamName NVARCHAR(100)
+	@Id int = 0 output,
+	@TeamName nvarchar(100)
 
 AS
 BEGIN

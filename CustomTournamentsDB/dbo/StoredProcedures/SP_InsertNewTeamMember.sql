@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[SP_InsertNewTeamMember]
-	@Id int = 0 OUTPUT,
+	@Id int = 0 output,
 	@TeamId int,
 	@PlayerId int
 

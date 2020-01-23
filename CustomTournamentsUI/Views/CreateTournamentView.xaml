@@ -40,7 +40,15 @@
                     </Button>
                 </Grid>
 
-                <ComboBox x:Name="AvailableTeams" SelectedItem="{Binding SelectedAvailableTeam}" />
+                <ComboBox x:Name="AvailableTeams" SelectedItem="{Binding SelectedAvailableTeam}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding TeamName}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
+                </ComboBox>
 
                 <Button x:Name="AddTeamToTournament" Content="Add Team" Margin="100,5,100,3" Grid.Column="0" MinHeight="35" />
 

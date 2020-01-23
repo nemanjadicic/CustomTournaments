@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using CustomTournamentsLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,19 +65,7 @@ namespace CustomTournamentsUI.ViewModels
         //                  METHODS AND CONSTRUCTOR
         public void LoadTournament()
         {
-            //TournamentModel tournament = SelectedTournament;
-
-            //var conductor = Parent as IConductor;
-            //if (tournament.IsLeague)
-            //{
-            //    conductor.ActivateItem(new LeagueViewModel(tournament));
-            //}
-            //else
-            //{
-            //    conductor.ActivateItem(new CupViewModel(tournament));
-            //}
-
-            // TODO - Uncomment when CupViewModel (and CupView) and LeagueViewModel (and LeagueView) are ready
+            //  TODO - Implement this method
         }
         
         public void CreateNewTournament()
@@ -87,23 +76,7 @@ namespace CustomTournamentsUI.ViewModels
 
         public HomeViewModel()
         {
-            List<TournamentModel> tournaments = new List<TournamentModel>();
-            tournaments.Add(new TournamentModel { TournamentName = "Ping Pong SuperLiga Srbije", IsLeague = false });
-            tournaments.Add(new TournamentModel { TournamentName = "Besmisleni Kup", IsLeague = false });
-            tournaments.Add(new TournamentModel { TournamentName = "Topli Drugari", IsLeague = true });
-            tournaments.Add(new TournamentModel { TournamentName = "Izbori 2020.", IsLeague = true });
-
-            _existingTournaments = new BindableCollection<TournamentModel>(tournaments);
-
-            // TODO - Delete this dummy data when the real data from the database is ready
+           //       TODO - Pull existing Tournaments from the DB
         }
-    }
-    
-    public class TournamentModel
-    {
-        public string TournamentName { get; set; }
-        public bool IsLeague { get; set; }
-
-        // TODO - Delete this temporary class when the real TournamentModel class is ready
     }
 }

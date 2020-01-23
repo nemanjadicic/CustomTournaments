@@ -18,10 +18,10 @@ namespace CustomTournamentsLibrary.Models
 
 
 
-        public TournamentModel(string name, bool league, decimal entryfee)
+        public TournamentModel(string name, bool leagueOrNot, decimal entryfee)
         {
             TournamentName = name;
-            IsLeague = league;
+            IsLeague = leagueOrNot;
             EntryFee = entryfee;
         }
 
