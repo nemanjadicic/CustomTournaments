@@ -27,8 +27,6 @@ namespace CustomTournamentsUI.ViewModels
         private bool _canCreateTeam;
         private string _errorMessage;
 
-
-
         
 
 
@@ -89,8 +87,6 @@ namespace CustomTournamentsUI.ViewModels
             FirstName = null;
             LastName = null;
         }
-
-
 
 
 
@@ -231,8 +227,6 @@ namespace CustomTournamentsUI.ViewModels
                 ErrorMessage = null;
             }
         }
-
-
 
 
 

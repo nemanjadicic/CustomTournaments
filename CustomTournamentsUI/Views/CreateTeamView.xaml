@@ -85,7 +85,7 @@
 
                 <!-- teamMembersList -->
                 <ListBox x:Name="TeamMembers" MinHeight="200" Margin="0,2,0,10" ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                         HorizontalContentAlignment="Center" SelectedItem="{Binding SelectedMember}" >
+                         SelectedItem="{Binding SelectedMember}" >
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -100,7 +100,7 @@
                         Margin="0,0,0,20" MinWidth="150" MinHeight="35" Content="Remove Selected" />
 
                 <!-- Create Team Button -->
-                <Button x:Name="CreateTeam" Content="Create Team" Margin="50,10,50,10" FontSize="28" 
+                <Button x:Name="CreateTeam" Content="Create Team" Margin="50,10,50,20" FontSize="28" 
                         FontWeight="SemiBold" MinHeight="60" IsEnabled="{Binding CanCreateTeam}" />
 
                 <TextBlock Text="{Binding ErrorMessage}" FontSize="12" Foreground="Red" TextWrapping="Wrap"/>

@@ -191,6 +191,7 @@ namespace CustomTournamentsUI.ViewModels
         public CreateTournamentViewModel()
         {
             _tournamentTeams = new BindableCollection<TeamModel>();
+            _tournamentPrizes = new BindableCollection<PrizeModel>();
         }
     }
 }

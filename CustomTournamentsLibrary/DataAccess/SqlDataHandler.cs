@@ -64,5 +64,10 @@ namespace CustomTournamentsLibrary.DataAccess
                 connection.Execute("dbo.SP_InsertNewTeamMember", parameters, commandType: CommandType.StoredProcedure);
             }
         }
+
+        public static void InsertNewPrize(PrizeModel prize)
+        {
+            
+        }
     }
 }
