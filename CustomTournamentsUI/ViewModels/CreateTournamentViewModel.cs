@@ -271,12 +271,21 @@ namespace CustomTournamentsUI.ViewModels
         public void CreateTournament()
         {
             TournamentModel tournament = new TournamentModel(TournamentName, IsLeague, EntryFee);
-            SqlDataHandler.InsertNewTournament(tournament);
+            SqlDataHandler.CreateTournament(tournament);
 
-            //foreach (TeamModel team in TournamentTeams)
-            //{
-            //    tournament.ParticipatingTeams.Add(team);
-            //}
+            foreach (TeamModel team in TournamentTeams)
+            {
+                tournament.ParticipatingTeams.Add(team);
+                if (tournament.IsLeague)
+                {
+                    SqlDataHandler.CreateLeagueParticipant(tournament, team);
+                }
+            }
+
+            foreach (PrizeModel prize in TournamentPrizes)
+            {
+                SqlDataHandler.CreatePrize(tournament, prize);
+            }
 
             var conductor = Parent as IConductor;
             conductor.ActivateItem(new HomeViewModel());

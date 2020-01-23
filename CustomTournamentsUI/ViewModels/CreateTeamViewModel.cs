@@ -80,7 +80,7 @@ namespace CustomTournamentsUI.ViewModels
         public void CreatePlayer()
         {
             PlayerModel player = new PlayerModel(FirstName, LastName);
-            SqlDataHandler.InsertNewPlayer(player);
+            SqlDataHandler.CreatePlayer(player);
             TeamMembers.Add(player);
             ValidateAllData();
 
@@ -206,12 +206,12 @@ namespace CustomTournamentsUI.ViewModels
         public void CreateTeam()
         {
             TeamModel team = new TeamModel(TeamName);
-            SqlDataHandler.InsertNewTeam(team);
+            SqlDataHandler.CreateTeam(team);
 
             foreach (PlayerModel player in TeamMembers)
             {
                 team.TeamMembers.Add(player);
-                SqlDataHandler.InsertNewTeamMembers(team, player);
+                SqlDataHandler.CreateTeamMembers(team, player);
             }
 
             if (_tournamentCreationView != null)

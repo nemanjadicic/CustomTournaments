@@ -28,7 +28,7 @@ namespace CustomTournamentsLibrary.DataAccess
             }
         }
 
-        public static void InsertNewPlayer(PlayerModel player)
+        public static void CreatePlayer(PlayerModel player)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -44,7 +44,7 @@ namespace CustomTournamentsLibrary.DataAccess
             player.Id = parameters.Get<int>("@Id");
         }
 
-        public static void InsertNewTeam(TeamModel team)
+        public static void CreateTeam(TeamModel team)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -59,7 +59,7 @@ namespace CustomTournamentsLibrary.DataAccess
             team.Id = parameters.Get<int>("@Id");
         }
 
-        public static void InsertNewTeamMembers(TeamModel team, PlayerModel player)
+        public static void CreateTeamMembers(TeamModel team, PlayerModel player)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -73,7 +73,7 @@ namespace CustomTournamentsLibrary.DataAccess
             }
         }
 
-        public static void InsertNewTournament(TournamentModel tournament)
+        public static void CreateTournament(TournamentModel tournament)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -90,9 +90,35 @@ namespace CustomTournamentsLibrary.DataAccess
             tournament.Id = parameters.Get<int>("@Id");
         }
 
-        public static void InsertNewPrize(PrizeModel prize)
+        public static void CreateLeagueParticipant(TournamentModel tournament, TeamModel team)
         {
-            
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@TournamentId", tournament.Id);
+            parameters.Add("@TeamId", team.Id);
+            parameters.Add("@TeamName", team.TeamName);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                connection.Execute("dbo.SP_InsertNewLeagueParticipant", parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public static void CreatePrize(TournamentModel tournament, PrizeModel prize)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@TournamentId", tournament.Id);
+            parameters.Add("@PlaceNumber", prize.PlaceNumber);
+            parameters.Add("@Placename", prize.PlaceName);
+            parameters.Add("@PrizeAmount", prize.PrizeAmount);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                connection.Execute("dbo.SP_InsertNewPrize", parameters, commandType: CommandType.StoredProcedure);
+            }
         }
     }
 }

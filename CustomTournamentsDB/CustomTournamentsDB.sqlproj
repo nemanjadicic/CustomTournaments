@@ -77,6 +77,8 @@
     <Build Include="dbo\StoredProcedures\SP_InsertNewTeamMember.sql" />
     <Build Include="dbo\StoredProcedures\SP_GetAllTeams.sql" />
     <Build Include="dbo\StoredProcedures\SP_InsertNewTournament.sql" />
+    <Build Include="dbo\StoredProcedures\SP_InsertNewLeagueParticipant.sql" />
+    <Build Include="dbo\StoredProcedures\SP_InsertNewPrize.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishedProfiles\CustomTournamentsDB.publish.xml" />
