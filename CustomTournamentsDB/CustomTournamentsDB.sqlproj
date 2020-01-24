@@ -80,6 +80,9 @@
     <Build Include="dbo\StoredProcedures\SP_InsertNewLeagueParticipant.sql" />
     <Build Include="dbo\StoredProcedures\SP_InsertNewPrize.sql" />
     <Build Include="dbo\StoredProcedures\SP_GetAllTournaments.sql" />
+    <Build Include="dbo\StoredProcedures\SP_InsertNewRound.sql" />
+    <Build Include="dbo\StoredProcedures\SP_InsertNewGame.sql" />
+    <Build Include="dbo\StoredProcedures\SP_InsertNewGameParticipant.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishedProfiles\CustomTournamentsDB.publish.xml" />

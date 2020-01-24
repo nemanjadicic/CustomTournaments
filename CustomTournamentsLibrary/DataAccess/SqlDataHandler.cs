@@ -127,5 +127,54 @@ namespace CustomTournamentsLibrary.DataAccess
                 connection.Execute("dbo.SP_InsertNewPrize", parameters, commandType: CommandType.StoredProcedure);
             }
         }
+
+        internal static void CreateRound(TournamentModel tournament, RoundModel round)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@TournamentId", tournament.Id);
+            parameters.Add("@RoundNumber", round.RoundNumber);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                connection.Execute("dbo.SP_InsertNewRound", parameters, commandType: CommandType.StoredProcedure);
+            }
+
+            round.Id = parameters.Get<int>("@Id");
+        }
+
+        internal static void CreateGame(TournamentModel tournament, GameModel game)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@TournamentId", tournament.Id);
+            parameters.Add("@RoundId", game.RoundId);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                connection.Execute("dbo.SP_InsertNewGame", parameters, commandType: CommandType.StoredProcedure);
+            }
+
+            game.Id = parameters.Get<int>("@Id");
+        }
+
+        internal static void CreateGameParticipants(GameParticipantModel participant)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("RoundId", participant.RoundId);
+            parameters.Add("@GameId", participant.GameId );
+            parameters.Add("@TeamName", participant.TeamCompeting.TeamName);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                connection.Execute("dbo.SP_InsertNewGameParticipant", parameters, commandType: CommandType.StoredProcedure);
+            }
+
+            participant.Id = parameters.Get<int>("@Id");
+        }
     }
 }

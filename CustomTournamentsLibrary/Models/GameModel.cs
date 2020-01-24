@@ -11,7 +11,7 @@ namespace CustomTournamentsLibrary.Models
         public int Id { get; set; }
         public int TournamentId { get; set; }
         public int RoundId { get; set; }
-        public List<GameParticipantModel> Competitors { get; set; }
+        public List<GameParticipantModel> Competitors { get; set; } = new List<GameParticipantModel>();
         public string GameDisplay
         {
             get
@@ -22,8 +22,9 @@ namespace CustomTournamentsLibrary.Models
 
 
 
-        public GameModel(int roundId)
+        public GameModel(int tourneyId, int roundId)
         {
+            TournamentId = tourneyId;
             RoundId = roundId;
         }
 
