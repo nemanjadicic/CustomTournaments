@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using CustomTournamentsLibrary.DataAccess;
 using CustomTournamentsLibrary.Models;
 using System;
 using System.Collections.Generic;
@@ -76,7 +77,7 @@ namespace CustomTournamentsUI.ViewModels
 
         public HomeViewModel()
         {
-           //       TODO - Pull existing Tournaments from the DB
+            _existingTournaments = new BindableCollection<TournamentModel>(SqlDataHandler.GetAllTournaments());
         }
     }
 }

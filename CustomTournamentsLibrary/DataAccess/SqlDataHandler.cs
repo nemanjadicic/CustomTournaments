@@ -12,6 +12,14 @@ namespace CustomTournamentsLibrary.DataAccess
 {
     public class SqlDataHandler
     {
+        public static List<TournamentModel> GetAllTournaments()
+        {
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                return connection.Query<TournamentModel>("dbo.SP_GetAllTournaments").ToList();
+            }
+        }
+
         public static List<PlayerModel> GetAllPlayers()
         {
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
