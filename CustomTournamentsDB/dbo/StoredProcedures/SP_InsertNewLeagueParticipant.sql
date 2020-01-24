@@ -1,16 +1,15 @@
 ﻿CREATE PROCEDURE [dbo].[SP_InsertNewLeagueParticipant]
 	@Id int = 0 output,
 	@TournamentId int,
-	@TeamId int,
 	@TeamName nvarchar(100)
 
 AS
 BEGIN
 	
 	INSERT INTO dbo.LeagueParticipants
-		(TournamentId, TeamId, TeamName)
+		(TournamentId, TeamName)
 	VALUES
-		(@TournamentId, @TeamId, @TeamName)
+		(@TournamentId, @TeamName)
 
 	SELECT @Id = SCOPE_IDENTITY();
 

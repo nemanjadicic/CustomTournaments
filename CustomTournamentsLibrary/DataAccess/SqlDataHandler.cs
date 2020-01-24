@@ -104,7 +104,6 @@ namespace CustomTournamentsLibrary.DataAccess
 
             parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@TournamentId", tournament.Id);
-            parameters.Add("@TeamId", team.Id);
             parameters.Add("@TeamName", team.TeamName);
 
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using CustomTournamentsLibrary.Models;
 using CustomTournamentsLibrary.Interfaces;
 using CustomTournamentsLibrary.DataAccess;
+using CustomTournamentsLibrary.Logic;
 
 namespace CustomTournamentsUI.ViewModels
 {
@@ -276,8 +277,13 @@ namespace CustomTournamentsUI.ViewModels
             foreach (TeamModel team in TournamentTeams)
             {
                 tournament.ParticipatingTeams.Add(team);
+            }
 
-                if (tournament.IsLeague)
+            RoundLogic.CreateDummyTeams(tournament);
+
+            if (tournament.IsLeague)
+            {
+                foreach (TeamModel team in tournament.ParticipatingTeams)
                 {
                     SqlDataHandler.CreateLeagueParticipant(tournament, team);
                 }
@@ -288,6 +294,8 @@ namespace CustomTournamentsUI.ViewModels
                 tournament.TournamentPrizes.Add(prize);
                 SqlDataHandler.CreatePrize(tournament, prize);
             }
+
+            RoundLogic.CreateRounds(tournament);
 
             var conductor = Parent as IConductor;
             conductor.ActivateItem(new HomeViewModel());

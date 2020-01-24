@@ -10,7 +10,6 @@ namespace CustomTournamentsLibrary.Models
     {
         public int Id { get; set; }
         public int TournamentId { get; set; }
-        public int TeamId { get; set; }
         public string TeamName { get; set; }
         public int Victories { get; set; } // nullable
         public int Draws { get; set; } // nullable

@@ -63,6 +63,7 @@
     <Compile Include="DataAccess\DatabaseAccess.cs" />
     <Compile Include="DataAccess\SqlDataHandler.cs" />
     <Compile Include="Interfaces\ITournamentCreator.cs" />
+    <Compile Include="Logic\RoundLogic.cs" />
     <Compile Include="Models\GameModel.cs" />
     <Compile Include="Models\GameParticipantModel.cs" />
     <Compile Include="Models\LeagueParticipantModel.cs" />
@@ -73,9 +74,7 @@
     <Compile Include="Models\TournamentModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Logic\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

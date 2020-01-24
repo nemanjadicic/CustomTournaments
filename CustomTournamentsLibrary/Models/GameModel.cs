@@ -9,6 +9,7 @@ namespace CustomTournamentsLibrary.Models
     public class GameModel
     {
         public int Id { get; set; }
+        public int TournamentId { get; set; }
         public int RoundId { get; set; }
         public List<GameParticipantModel> Competitors { get; set; }
         public string GameDisplay
