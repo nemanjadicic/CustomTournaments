@@ -276,6 +276,7 @@ namespace CustomTournamentsUI.ViewModels
             foreach (TeamModel team in TournamentTeams)
             {
                 tournament.ParticipatingTeams.Add(team);
+
                 if (tournament.IsLeague)
                 {
                     SqlDataHandler.CreateLeagueParticipant(tournament, team);
@@ -284,6 +285,7 @@ namespace CustomTournamentsUI.ViewModels
 
             foreach (PrizeModel prize in TournamentPrizes)
             {
+                tournament.TournamentPrizes.Add(prize);
                 SqlDataHandler.CreatePrize(tournament, prize);
             }
 

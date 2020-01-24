@@ -6,30 +6,54 @@
              xmlns:local="clr-namespace:CustomTournamentsUI.Views"
              mc:Ignorable="d" Background="AliceBlue" FontSize="18"
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <StackPanel>
+        <!-- Title -->
         <TextBlock Text="Home" FontSize="36" TextAlignment="Left" 
-                   Margin="0,0,0,65" FontWeight="SemiBold" FontStyle="Oblique"
+                   Margin="0,0,0,80" FontWeight="SemiBold" FontStyle="Oblique"
                    Foreground="Blue"/>
 
-        <TextBlock Text="Existing Tournaments:" TextAlignment="Center" Margin="0,5" />
-        <ListBox x:Name="ExistingTournaments" Margin="165,0" MinHeight="150"
-                 ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                 SelectedItem="{Binding SelectedTournament}" FontSize="16">
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding TournamentName}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+        
+        
+        
+        
+        <!-- List of Tournaments -->
+        <Grid Margin="170,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="150" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             
-        </ListBox>
+            <TextBlock Text="Existing Tournaments:" TextAlignment="Center" Grid.Row="0" Margin="0,0,0,3" />
+            <ListBox x:Name="ExistingTournaments" MinHeight="150"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedItem="{Binding SelectedTournament}" 
+                     Grid.Row="1" FontSize="16">
 
-        <Button x:Name="LoadTournament" Content="Load Tournament" MaxWidth="180" 
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding TournamentName}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+            
+        </Grid>
+
+        
+        
+        
+        
+        <!-- Buttons -->
+        <Button x:Name="LoadTournament" Content="Load Tournament" MaxWidth="180" Grid.Row="2"
                 MinHeight="35" Margin="0,10" IsEnabled="{Binding CanLoadTournament}" />
 
-        <TextBlock Text="or" Margin="0,0,0,10" TextAlignment="Center" />
+        <TextBlock Text="or" Margin="0,0,0,10" TextAlignment="Center" Grid.Row="3" />
 
         <Button x:Name="CreateNewTournament" Content="Create New Tournament"
                 MaxWidth="270" MinHeight="50" FontSize="20" FontWeight="Bold" />
     </StackPanel>
+    
 </UserControl>

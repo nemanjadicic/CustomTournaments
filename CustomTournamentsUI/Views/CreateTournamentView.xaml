@@ -78,12 +78,22 @@
 
             </StackPanel>
 
+            
+            
+            
+            
             <!-- RIGHT COLUMN -->
-            <StackPanel Grid.Column="1" Margin="40,0,5,0" >
-
+            <Grid Grid.Column="1" Margin="40,0,5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.3*" />
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="0.3*" />
+                    <RowDefinition Height="150" />
+                </Grid.RowDefinitions>
+                
                 <!-- Teams List -->
-                <TextBlock Text="Participanting Teams / Players:" />
-                <Grid>
+                <TextBlock Text="Participating Teams / Players:" Grid.Row="0" />
+                <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="*" />
@@ -105,9 +115,11 @@
                             MinHeight="40" />
                 </Grid>
 
+                
+                
                 <!-- Prizes List -->
-                <TextBlock Text="Tournament Prizes:" />
-                <Grid>
+                <TextBlock Text="Tournament Prizes:" Grid.Row="2" />
+                <Grid Grid.Row="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="*" />
@@ -129,10 +141,14 @@
                             MinHeight="40" />
                 </Grid>
 
-            </StackPanel>
+            </Grid>
 
         </Grid>
 
+        
+        
+        
+        
         <!-- Create Tournament Button -->
         <Grid Margin="0,10">
             <Grid.ColumnDefinitions>
