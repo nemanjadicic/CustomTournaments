@@ -182,6 +182,19 @@ namespace CustomTournamentsUI.ViewModels
         {
             List<string> errors = new List<string>();
 
+            List<TeamModel> existingTeams = SqlDataHandler.GetAllTeams();
+            List<string> usedNames = new List<string>();
+
+            foreach (TeamModel team in existingTeams)
+            {
+                usedNames.Add(team.TeamName);
+            }
+
+            if (usedNames.Contains(TeamName))
+            {
+                errors.Add($"Team name {TeamName} is already taken.");
+            }
+
             if (String.IsNullOrWhiteSpace(TeamName))
             {
                 errors.Add("Team must have a name.");
@@ -192,7 +205,7 @@ namespace CustomTournamentsUI.ViewModels
                 errors.Add("Team must have at least 1 member.");
             }
 
-            if (String.IsNullOrWhiteSpace(TeamName) || TeamMembers.Count == 0)
+            if (usedNames.Contains(TeamName) || String.IsNullOrWhiteSpace(TeamName) || TeamMembers.Count == 0)
             {
                 CanCreateTeam = false;
                 ErrorMessage = $"* {string.Join(" ", errors)}";
