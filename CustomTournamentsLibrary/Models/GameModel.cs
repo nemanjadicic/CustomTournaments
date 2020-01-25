@@ -16,7 +16,7 @@ namespace CustomTournamentsLibrary.Models
         {
             get
             {
-                return $"{Competitors[0].TeamCompeting.TeamName} : {Competitors[1].TeamCompeting.TeamName}";
+                return $"{Competitors[0].TeamName} : {Competitors[1].TeamName}";
             }
         }
 

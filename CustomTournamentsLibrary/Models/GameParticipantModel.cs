@@ -12,7 +12,7 @@ namespace CustomTournamentsLibrary.Models
         public int RoundId { get; set; }
         public int GameId { get; set; }
         public GameModel PreviousCupGame { get; set; } // nullable
-        public TeamModel TeamCompeting { get; set; } // nullable
+        public string TeamName { get; set; } // nullable
         public int Score { get; set; } // nullable
         public bool CupRoundWinner { get; set; } // nullable
     }

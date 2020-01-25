@@ -144,12 +144,12 @@ namespace CustomTournamentsLibrary.DataAccess
             round.Id = parameters.Get<int>("@Id");
         }
 
-        internal static void CreateGame(TournamentModel tournament, GameModel game)
+        internal static void CreateGame(GameModel game)
         {
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
-            parameters.Add("@TournamentId", tournament.Id);
+            parameters.Add("@TournamentId", game.TournamentId);
             parameters.Add("@RoundId", game.RoundId);
 
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
@@ -160,14 +160,14 @@ namespace CustomTournamentsLibrary.DataAccess
             game.Id = parameters.Get<int>("@Id");
         }
 
-        internal static void CreateGameParticipants(GameParticipantModel participant)
+        internal static void CreateGameParticipant(GameParticipantModel participant)
         {
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("RoundId", participant.RoundId);
             parameters.Add("@GameId", participant.GameId );
-            parameters.Add("@TeamName", participant.TeamCompeting.TeamName);
+            parameters.Add("@TeamName", participant.TeamName);
 
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
             {
