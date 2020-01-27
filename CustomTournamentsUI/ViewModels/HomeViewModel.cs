@@ -66,7 +66,16 @@ namespace CustomTournamentsUI.ViewModels
         //                  METHODS AND CONSTRUCTOR
         public void LoadTournament()
         {
-            //  TODO - Implement this method
+            var conductor = Parent as IConductor;
+
+            if (SelectedTournament.IsLeague)
+            {
+                conductor.ActivateItem(new LeagueViewModel(SelectedTournament));
+            }
+            else
+            {
+
+            }
         }
         
         public void CreateNewTournament()

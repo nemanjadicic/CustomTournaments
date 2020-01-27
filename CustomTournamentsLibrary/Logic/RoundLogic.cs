@@ -38,7 +38,7 @@ namespace CustomTournamentsLibrary.Logic
                     int teamIndexer = roundNumber % shortenedCount;
 
                     //  Create 1st game in the round
-                    GameModel game = new GameModel(tournament.Id, round.Id);
+                    GameModel game = new GameModel(tournament.Id, round.Id, true);
                     SqlDataHandler.CreateGame(game);
 
                     //  Create 1st game competitors
@@ -59,7 +59,7 @@ namespace CustomTournamentsLibrary.Logic
                         int awayIndex = (roundNumber + shortenedCount - index) % shortenedCount;
 
                         //  Create the next game
-                        GameModel nextGame = new GameModel(tournament.Id, round.Id);
+                        GameModel nextGame = new GameModel(tournament.Id, round.Id, true);
                         SqlDataHandler.CreateGame(nextGame);
 
                         //  Create next game's competitors
@@ -106,7 +106,7 @@ namespace CustomTournamentsLibrary.Logic
 
 
             //  Create 1st game in the round
-            GameModel game = new GameModel(round.TournamentId, round.Id);
+            GameModel game = new GameModel(round.TournamentId, round.Id, true);
             SqlDataHandler.CreateGame(game);
             game.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = game.Id, TeamName = shortenedTeamList[teamIndexer].TeamName });
             game.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = game.Id, TeamName = roundParticipants[0].TeamName });
@@ -124,7 +124,7 @@ namespace CustomTournamentsLibrary.Logic
                 int homeIndex = (round.RoundNumber + index) % shortenedCount;
                 int awayIndex = (round.RoundNumber + shortenedCount - index) % shortenedCount;
 
-                GameModel nextGame = new GameModel(round.TournamentId, round.Id);
+                GameModel nextGame = new GameModel(round.TournamentId, round.Id, true);
                 SqlDataHandler.CreateGame(nextGame);
                 nextGame.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[homeIndex].TeamName });
                 nextGame.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[awayIndex].TeamName });

@@ -1,4 +1,5 @@
-﻿using CustomTournamentsLibrary.Models;
+﻿using Caliburn.Micro;
+using CustomTournamentsLibrary.Models;
 using Dapper;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,55 @@ namespace CustomTournamentsLibrary.DataAccess
             player.Id = parameters.Get<int>("@Id");
         }
 
+        public static List<RoundModel> GetRoundsByTournament(int tournamentId)
+        {
+            List<RoundModel> rounds = new List<RoundModel>();
+
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@TournamentId", tournamentId);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                rounds = connection.Query<RoundModel>("dbo.SP_GetRoundsByTournament", parameters, commandType: CommandType.StoredProcedure).ToList();
+            }
+
+
+
+
+
+            foreach (RoundModel round in rounds)
+            {
+                parameters = new DynamicParameters();
+                parameters.Add("@RoundId", round.Id);
+
+                using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+                {
+                    round.Games = connection.Query<GameModel>("dbo.SP_GetGamesByRound", parameters, commandType: CommandType.StoredProcedure).ToList();
+                }
+
+
+
+
+
+                foreach (GameModel game in round.Games)
+                {
+                    parameters = new DynamicParameters();
+                    parameters.Add("@GameId", game.Id);
+
+                    using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+                    {
+                        game.Competitors = connection.Query<GameParticipantModel>("dbo.SP_GetGameParticipantsByGame", parameters, commandType: CommandType.StoredProcedure).ToList();
+                    }
+                }
+            }
+
+
+
+
+
+            return rounds;
+        }
+
         public static void CreateTeam(TeamModel team)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -85,7 +135,7 @@ namespace CustomTournamentsLibrary.DataAccess
         {
             DynamicParameters parameters = new DynamicParameters();
 
-            parameters.Add("@Id", 0, dbType:DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@TournamentName", tournament.TournamentName);
             parameters.Add("@IsLeague", tournament.IsLeague);
             parameters.Add("@EntryFee", tournament.EntryFee);
@@ -151,6 +201,7 @@ namespace CustomTournamentsLibrary.DataAccess
             parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@TournamentId", game.TournamentId);
             parameters.Add("@RoundId", game.RoundId);
+            parameters.Add("@Unplayed", game.Unplayed);
 
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
             {
@@ -166,7 +217,7 @@ namespace CustomTournamentsLibrary.DataAccess
 
             parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("RoundId", participant.RoundId);
-            parameters.Add("@GameId", participant.GameId );
+            parameters.Add("@GameId", participant.GameId);
             parameters.Add("@TeamName", participant.TeamName);
 
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))

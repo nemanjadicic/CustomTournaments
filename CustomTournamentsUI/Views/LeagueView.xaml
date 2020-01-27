@@ -4,9 +4,94 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CustomTournamentsUI.Views"
-             mc:Ignorable="d" Background="AliceBlue"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" Background="AliceBlue" FontSize="18"
+             d:DesignHeight="500" d:DesignWidth="800">
+
+    <StackPanel>
+
+        <!-- HEADER -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3.3*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Tournament:" FontSize="28" TextAlignment="Left" Margin="0,0,20,0"
+                   FontWeight="SemiBold" FontStyle="Oblique" Grid.Column="0"/>
+
+            <TextBlock x:Name="TournamentName" FontSize="28" TextAlignment="Left" Foreground="Blue"
+                   FontWeight="SemiBold" FontStyle="Oblique" Grid.Column="1"/>
+
+        </Grid>
+
+        <!-- CONTENT GRID -->
+        <Grid Margin="20,50,20,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.5*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Part -->
+            <Grid Grid.Column="0" Margin="0,30,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="270" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Rounds -->
+                <StackPanel Orientation="Horizontal" Grid.Row="0">
+
+                    <TextBlock Text="Round:" Margin="0,0,20,0" VerticalAlignment="Center" />
+                    <ComboBox x:Name="RoundList" MinWidth="60" SelectedItem="{Binding SelectedRound}"
+                              cal:Message.Attach="[Event SelectionChanged] = [Action RoundListSelectionChanged()]">
+
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding RoundNumber}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+
+                    </ComboBox>
+
+                    <CheckBox x:Name="UnplayedOnly" Content="Unplayed Only" Margin="28,0,0,0" 
+                                  VerticalContentAlignment="Center" />
+                </StackPanel>
+
+                <!-- Games List -->
+                <ListBox x:Name="GameList" MinHeight="260" Grid.Row="1" Margin="0,5" FontSize="16" 
+                         SelectedItem="{Binding SelectedGame}">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding GameDisplay}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+
+                <Button x:Name="EnterResult" Content="Enter Result" Margin="90, 0" Grid.Row="2" MinHeight="30" 
+                        IsEnabled="{Binding CanEnterResult}" FontSize="20" VerticalContentAlignment="Center" />
+
+            </Grid>
+
+            <!-- Right Part -->
+            <Grid Margin="20,0,0,0" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="350" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="League Table" HorizontalAlignment="Center" Margin="0,0,0,2" />
+
+                <DataGrid x:Name="LeagueParticipantsList" FontSize="14" 
+                          AlternatingRowBackground="Silver" Grid.Row="1" />
+
+            </Grid>
+
+        </Grid>
+
+    </StackPanel>
+
 </UserControl>
