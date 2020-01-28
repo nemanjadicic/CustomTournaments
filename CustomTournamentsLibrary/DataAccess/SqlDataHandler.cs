@@ -227,5 +227,10 @@ namespace CustomTournamentsLibrary.DataAccess
 
             participant.Id = parameters.Get<int>("@Id");
         }
+
+        public static void UpdateGameScore(int gameId, int homeScore, int awayScore)
+        {
+
+        }
     }
 }

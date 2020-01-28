@@ -3,10 +3,56 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CustomTournamentsUI.Views"
-        mc:Ignorable="d" Background="AliceBlue"
-        Title="EnterResultView" Height="450" Width="800">
-    <Grid>
+        xmlns:local="clr-namespace:CustomTournamentsUI.Views" WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d" Background="AliceBlue" ResizeMode="NoResize" WindowStyle="None"
+        Title="EnterResultView" Height="200" Width="500" MouseDown="Window_MouseDown"
+        FontFamily="Segoe UI" FontSize="18">
+
+    <Border BorderBrush="Gray" BorderThickness="2">
+
+        <Grid Margin="10,20,10,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="0.5*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0.3*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Home Team -->
+                <TextBlock Grid.Column="0" Text="{Binding HomeTeam.TeamName}" VerticalAlignment="Center" 
+                           HorizontalAlignment="Right" FontStyle="Oblique" TextWrapping="Wrap" />
+                <TextBox Grid.Column="1" Padding="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                         Margin="15,25,5,25" x:Name="HomeScore"/>
+                
+                <!-- VS -->
+                <TextBlock Grid.Column="2" Text="VS" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           FontSize="14" FontWeight="Bold" />
+
+                <!-- Away Team -->
+                <TextBox Grid.Column="3" Padding="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                         Margin="5,25,15,25" x:Name="AwayScore"/>
+                <TextBlock Grid.Column="4" Text="{Binding AwayTeam.TeamName}" VerticalAlignment="Center" 
+                           HorizontalAlignment="Left" FontStyle="Oblique" TextWrapping="Wrap" />
+            </Grid>
+
+            <!-- Button -->
+            <Button Grid.Row="1" Content="Enter Result" Margin="180,10" x:Name="EnterResult" 
+                    VerticalContentAlignment="Center" IsEnabled="{Binding CanEnterResult}" />
+            
+            <!-- Error Message -->
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontSize="12" 
+                       Grid.Row="2" HorizontalAlignment="Center" />
+
+        </Grid>
         
-    </Grid>
+    </Border>
+    
 </Window>

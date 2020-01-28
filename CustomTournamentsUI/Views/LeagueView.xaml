@@ -60,15 +60,15 @@
                 </StackPanel>
 
                 <!-- Games List -->
-                <ListBox x:Name="GameList" MinHeight="260" Grid.Row="1" Margin="0,5" FontSize="16" 
-                         SelectedItem="{Binding SelectedGame}">
+                <ListBox x:Name="GameList" MinHeight="260" Grid.Row="1" Margin="0,5" FontSize="16"
+                         ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedItem="{Binding SelectedGame}" >
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding GameDisplay}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-
+                
                 </ListBox>
 
                 <Button x:Name="EnterResult" Content="Enter Result" Margin="90, 0" Grid.Row="2" MinHeight="30" 

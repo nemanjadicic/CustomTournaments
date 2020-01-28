@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CustomTournamentsUI.ViewModels
 {
-    public class LeagueViewModel : Screen
+    public class LeagueViewModel : Screen, IEnterResult
     {
         private string _tournamentName;
         private BindableCollection<RoundModel> _roundList;
@@ -19,8 +19,6 @@ namespace CustomTournamentsUI.ViewModels
         private BindableCollection<GameModel> _gameList;
         private GameModel _selectedGame;
         private bool _canEnterResult = true;
-
-
 
 
 
@@ -111,10 +109,16 @@ namespace CustomTournamentsUI.ViewModels
                     else
                     {
                         CanEnterResult = false;
-                    } 
+                    }
                 }
             }
         }
+
+
+        
+
+
+
         public bool CanEnterResult
         {
             get { return _canEnterResult; }
@@ -124,15 +128,11 @@ namespace CustomTournamentsUI.ViewModels
                 NotifyOfPropertyChange(() => CanEnterResult);
             }
         }
-
         public void EnterResult()
         {
-
+            IWindowManager manager = new WindowManager();
+            manager.ShowWindow(new EnterResultViewModel(this));
         }
-
-
-
-
 
 
 

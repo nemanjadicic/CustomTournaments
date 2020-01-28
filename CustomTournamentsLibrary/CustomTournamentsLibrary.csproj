@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="DataAccess\DatabaseAccess.cs" />
     <Compile Include="DataAccess\SqlDataHandler.cs" />
+    <Compile Include="Interfaces\IEnterResult.cs" />
     <Compile Include="Interfaces\ITournamentCreator.cs" />
     <Compile Include="Logic\RoundLogic.cs" />
     <Compile Include="Models\GameModel.cs" />

@@ -1,4 +1,7 @@
 ﻿using Caliburn.Micro;
+using CustomTournamentsLibrary.DataAccess;
+using CustomTournamentsLibrary.Interfaces;
+using CustomTournamentsLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +12,116 @@ namespace CustomTournamentsUI.ViewModels
 {
     public class EnterResultViewModel : Screen
     {
+        IEnterResult _leagueView;
+        
+        private string _homeScore;
+        private string _awayScore;
+        private bool _canEnterResult;
+        private string _errorMessage;
 
+
+
+
+
+        public GameParticipantModel HomeTeam { get; set; }
+        public GameParticipantModel AwayTeam { get; set; }
+
+
+
+
+
+        public string HomeScore
+        {
+            get { return _homeScore; }
+            set 
+            { 
+                _homeScore = value;
+                NotifyOfPropertyChange(() => HomeScore);
+                ValidateEntries();
+            }
+        }
+        public string AwayScore
+        {
+            get { return _awayScore; }
+            set 
+            { 
+                _awayScore = value;
+                NotifyOfPropertyChange(() => AwayScore);
+                ValidateEntries();
+            }
+        }
+
+
+
+
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set 
+            { 
+                _errorMessage = value;
+                NotifyOfPropertyChange(() => ErrorMessage);
+            }
+        }
+        public bool CanEnterResult
+        {
+            get { return _canEnterResult; }
+            set 
+            {
+                _canEnterResult = value;
+                NotifyOfPropertyChange(() => CanEnterResult);
+            }
+        }
+        public void ValidateEntries()
+        {
+            List<string> errors = new List<string>();
+            
+            bool homeScoreValid = int.TryParse(HomeScore, out int homeScoreValue);
+            bool awayScoreValid = int.TryParse(AwayScore, out int awayScoreValue);
+
+            if (!homeScoreValid || !awayScoreValid)
+            {
+                errors.Add("Team's score must be a number.");
+            }
+
+            if (homeScoreValue < 0 || awayScoreValue < 0)
+            {
+                errors.Add("Team's score must not be lower than 0.");
+            }
+
+            bool somethingWrong = (!homeScoreValid || !awayScoreValid) || (homeScoreValue < 0 || awayScoreValue < 0);
+
+            if (somethingWrong)
+            {
+                CanEnterResult = false;
+                ErrorMessage = $"* {String.Join(" ", errors)}";
+            }
+            else
+            {
+                CanEnterResult = true;
+                ErrorMessage = null;
+            }
+        }
+        public void EnterResult()
+        {
+            SqlDataHandler.UpdateGameScore(_leagueView.SelectedGame.Id, int.Parse(HomeScore), int.Parse(AwayScore));
+
+            _leagueView.SelectedGame.Competitors[0].Score = int.Parse(HomeScore);
+            _leagueView.SelectedGame.Competitors[1].Score = int.Parse(AwayScore);
+
+            TryClose();
+        }
+
+
+
+
+        public EnterResultViewModel(IEnterResult previousView)
+        {
+            _leagueView = previousView;
+
+            HomeTeam = _leagueView.SelectedGame.Competitors[0];
+            AwayTeam = _leagueView.SelectedGame.Competitors[1];
+        }
     }
 }
