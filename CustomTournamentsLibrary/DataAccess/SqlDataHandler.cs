@@ -228,9 +228,29 @@ namespace CustomTournamentsLibrary.DataAccess
             participant.Id = parameters.Get<int>("@Id");
         }
 
-        public static void UpdateGameScore(int gameId, int homeScore, int awayScore)
+        public static void UpdateGameScoreAndStatus(GameModel game)
         {
+            DynamicParameters parameters = new DynamicParameters();
 
+            parameters.Add("@Id", game.Id);
+            parameters.Add("@Unplayed", game.Unplayed);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                connection.Execute("dbo.SP_UpdateGameStatus", parameters, commandType: CommandType.StoredProcedure);
+            }
+
+            foreach (GameParticipantModel team in game.Competitors)
+            {
+                parameters = new DynamicParameters();
+                parameters.Add("@Id", team.Id);
+                parameters.Add("@Score", team.Score);
+
+                using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+                {
+                    connection.Execute("dbo.SP_UpdateGameParticipantScore", parameters, commandType: CommandType.StoredProcedure);
+                }
+            }
         }
     }
 }

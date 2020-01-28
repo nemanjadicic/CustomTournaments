@@ -12,6 +12,7 @@ namespace CustomTournamentsUI.ViewModels
 {
     public class LeagueViewModel : Screen, IEnterResult
     {
+        //          BACKING FIELDS
         private string _tournamentName;
         private BindableCollection<RoundModel> _roundList;
         private RoundModel _selectedRound;
@@ -24,6 +25,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
+        //          ROUNDS AND GAMES
         public string TournamentName
         {
             get { return _tournamentName; }
@@ -114,11 +116,11 @@ namespace CustomTournamentsUI.ViewModels
             }
         }
 
-
         
 
 
 
+        //          ENTERING A RESULT
         public bool CanEnterResult
         {
             get { return _canEnterResult; }

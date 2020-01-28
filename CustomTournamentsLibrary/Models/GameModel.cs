@@ -17,13 +17,16 @@ namespace CustomTournamentsLibrary.Models
         {
             get
             {
+                GameParticipantModel homeTeam = Competitors[0];
+                GameParticipantModel awayTeam = Competitors[1];
+                
                 if (Unplayed)
                 {
-                    return $"{Competitors[0].TeamName} : {Competitors[1].TeamName}";
+                    return $"{homeTeam.TeamName} : {awayTeam.TeamName}";
                 }
                 else
                 {
-                    return $"{Competitors[0].TeamName} {Competitors[0].Score} : {Competitors[1].Score} {Competitors[1].TeamName}";
+                    return $"{homeTeam.TeamName} {homeTeam.Score} : {awayTeam.Score} {awayTeam.TeamName}";
                 }
             }
         }

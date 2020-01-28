@@ -12,8 +12,8 @@ namespace CustomTournamentsUI.ViewModels
 {
     public class EnterResultViewModel : Screen
     {
+        //          BACKING FIELDS
         IEnterResult _leagueView;
-        
         private string _homeScore;
         private string _awayScore;
         private bool _canEnterResult;
@@ -23,13 +23,9 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
+        //          TEAMS
         public GameParticipantModel HomeTeam { get; set; }
         public GameParticipantModel AwayTeam { get; set; }
-
-
-
-
-
         public string HomeScore
         {
             get { return _homeScore; }
@@ -55,6 +51,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
+        //          ENTERING SCORES
         public string ErrorMessage
         {
             get { return _errorMessage; }
@@ -105,13 +102,18 @@ namespace CustomTournamentsUI.ViewModels
         }
         public void EnterResult()
         {
-            SqlDataHandler.UpdateGameScore(_leagueView.SelectedGame.Id, int.Parse(HomeScore), int.Parse(AwayScore));
+            HomeTeam.Score = int.Parse(HomeScore);
+            AwayTeam.Score = int.Parse(AwayScore);
 
-            _leagueView.SelectedGame.Competitors[0].Score = int.Parse(HomeScore);
-            _leagueView.SelectedGame.Competitors[1].Score = int.Parse(AwayScore);
+            _leagueView.SelectedGame.Unplayed = false;
 
+            SqlDataHandler.UpdateGameScoreAndStatus(_leagueView.SelectedGame);
+
+            _leagueView.GameList.Refresh();
+            
             TryClose();
         }
+
 
 
 

@@ -86,6 +86,8 @@
     <Build Include="dbo\StoredProcedures\SP_GetGamesByRound.sql" />
     <Build Include="dbo\StoredProcedures\SP_GetGameParticipantsByGame.sql" />
     <Build Include="dbo\StoredProcedures\SP_GetRoundsByTournament.sql" />
+    <Build Include="dbo\StoredProcedures\SP_UpdateGameStatus.sql" />
+    <Build Include="dbo\StoredProcedures\SP_UpdateGameParticipantScore.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishedProfiles\CustomTournamentsDB.publish.xml" />
