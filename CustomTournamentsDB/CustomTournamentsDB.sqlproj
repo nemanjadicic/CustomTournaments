@@ -88,10 +88,15 @@
     <Build Include="dbo\StoredProcedures\SP_GetRoundsByTournament.sql" />
     <Build Include="dbo\StoredProcedures\SP_UpdateGameStatus.sql" />
     <Build Include="dbo\StoredProcedures\SP_UpdateGameParticipantScore.sql" />
-    <Build Include="dbo\StoredProcedures\SP_GetLeagueParticipants.sql" />
     <Build Include="dbo\StoredProcedures\SP_GetLeagueParticipantByName.sql" />
+    <Build Include="dbo\StoredProcedures\SP_GetLeagueParticipantsForDisplay.sql" />
+    <Build Include="dbo\StoredProcedures\SP_GetLeagueParticipantsByTournament.sql" />
+    <Build Include="dbo\StoredProcedures\SP_UpdateLeagueParticipant.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishedProfiles\CustomTournamentsDB.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="CustomTournamentsDB.refactorlog" />
   </ItemGroup>
 </Project>

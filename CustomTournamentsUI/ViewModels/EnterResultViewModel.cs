@@ -111,8 +111,7 @@ namespace CustomTournamentsUI.ViewModels
             SqlDataHandler.UpdateLeagueParticipants(_leagueView.SelectedGame);
 
             _leagueView.GameList.Refresh();
-            _leagueView.LeagueParticipants.Refresh();
-            
+
             TryClose();
         }
 

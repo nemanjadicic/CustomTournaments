@@ -74,7 +74,7 @@ namespace CustomTournamentsUI.ViewModels
             }
             else
             {
-
+                // TODO - Implement this
             }
         }
         

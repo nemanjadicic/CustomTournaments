@@ -80,7 +80,8 @@
             <Grid Margin="10,0,5,0" Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="350" />
+                    <RowDefinition Height="320" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Text="League Table" HorizontalAlignment="Center" Margin="0,0,0,5" />
@@ -97,12 +98,15 @@
                         <DataGridTextColumn Header="D" Binding="{Binding Draws}" />
                         <DataGridTextColumn Header="L" Binding="{Binding Defeats}" />
                         <DataGridTextColumn Header="F" Binding="{Binding Scored}" />
-                        <DataGridTextColumn Header="C" Binding="{Binding Conceded}" />
+                        <DataGridTextColumn Header="A" Binding="{Binding Conceded}" />
                         <DataGridTextColumn Header="Diff" Binding="{Binding ScoreDifferential}" />
-                        <DataGridTextColumn Header="Points" Binding="{Binding Points}" />
+                        <DataGridTextColumn Header="Points" Binding="{Binding Points}" FontWeight="Bold" />
                     </DataGrid.Columns>
                     
                 </DataGrid>
+
+                <Button Grid.Row="2" MinHeight="30" Margin="165,5,165,0" Content="Refresh Table" 
+                        x:Name="RefreshTable"/>
 
             </Grid>
 

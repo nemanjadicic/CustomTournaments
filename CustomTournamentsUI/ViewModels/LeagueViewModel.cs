@@ -2,17 +2,14 @@
 using CustomTournamentsLibrary.DataAccess;
 using CustomTournamentsLibrary.Interfaces;
 using CustomTournamentsLibrary.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomTournamentsUI.ViewModels
 {
     public class LeagueViewModel : Screen, IEnterResult
     {
         //          BACKING FIELDS
+        TournamentModel _currentTournament;
         private string _tournamentName;
         private BindableCollection<RoundModel> _roundList;
         private RoundModel _selectedRound;
@@ -121,40 +118,12 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //          LEAGUE TABLE
-        public BindableCollection<LeagueParticipantModel> LeagueParticipants
-        {
-            get { return _leagueParticipants; }
-            set 
-            { 
-                _leagueParticipants = value;
-                NotifyOfPropertyChange(() => LeagueParticipants);
-            }
-        }
-        private void OrderTeamsForDisplay()
-        {
-            foreach (LeagueParticipantModel team in _leagueParticipants)
-            {
-                team.ScoreDifferential = team.Scored - team.Conceded;
-            }
-            
-            _leagueParticipants.OrderBy(team => team.Points).ThenBy(team => team.ScoreDifferential).ThenBy(team => team.Scored);
-            
-            for (int num = 0; num < _leagueParticipants.Count; num++)
-            {
-                _leagueParticipants[num].Id = num + 1;
-            }
-        }
-
-
-
-
 
         //          ENTERING A RESULT
         public bool CanEnterResult
         {
             get { return _canEnterResult; }
-            set 
+            set
             {
                 _canEnterResult = value;
                 NotifyOfPropertyChange(() => CanEnterResult);
@@ -170,15 +139,59 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        public LeagueViewModel(TournamentModel currentTournament)
+
+
+
+        //          LEAGUE TABLE
+        public BindableCollection<LeagueParticipantModel> LeagueParticipants
         {
-            _tournamentName = currentTournament.TournamentName;
-            _roundList = new BindableCollection<RoundModel>(SqlDataHandler.GetRoundsByTournament(currentTournament.Id));
+            get { return _leagueParticipants; }
+            set 
+            { 
+                _leagueParticipants = value;
+                NotifyOfPropertyChange(() => LeagueParticipants);
+            }
+        }
+        public void RefreshTable()
+        {
+            LeagueParticipants = new BindableCollection<LeagueParticipantModel>(SqlDataHandler.GetLeagueParticipantsForDisplay(_currentTournament.Id));
+
+            ScoreDifferenceAndPositionNumber();
+        }
+        private void ScoreDifferenceAndPositionNumber()
+        {
+            foreach (LeagueParticipantModel team in _leagueParticipants)
+            {
+                team.ScoreDifferential = team.Scored - team.Conceded;
+            }
+
+            for (int num = 0; num < _leagueParticipants.Count; num++)
+            {
+                _leagueParticipants[num].Id = num + 1;
+            }
+        }
+
+
+
+
+
+        
+
+
+
+
+
+        public LeagueViewModel(TournamentModel selectedTournament)
+        {
+            _currentTournament = selectedTournament;
+            
+            _tournamentName = _currentTournament.TournamentName;
+            _roundList = new BindableCollection<RoundModel>(SqlDataHandler.GetRoundsByTournament(_currentTournament.Id));
             _selectedRound = _roundList[0];
             _gameList = new BindableCollection<GameModel>(SelectedRound.Games);
-            _leagueParticipants = new BindableCollection<LeagueParticipantModel>(SqlDataHandler.GetLeagueParticipantsByTournament(currentTournament));
+            _leagueParticipants = new BindableCollection<LeagueParticipantModel>(SqlDataHandler.GetLeagueParticipantsForDisplay(_currentTournament.Id));
 
-            OrderTeamsForDisplay();
+            ScoreDifferenceAndPositionNumber();
         }
     }
 }

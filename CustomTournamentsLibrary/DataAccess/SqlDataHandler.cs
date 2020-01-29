@@ -37,22 +37,6 @@ namespace CustomTournamentsLibrary.DataAccess
             }
         }
 
-        public static void CreatePlayer(PlayerModel player)
-        {
-            DynamicParameters parameters = new DynamicParameters();
-
-            parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
-            parameters.Add("@FirstName", player.FirstName);
-            parameters.Add("@LastName", player.LastName);
-
-            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
-            {
-                connection.Execute("dbo.SP_InsertNewPlayer", parameters, commandType: CommandType.StoredProcedure);
-            }
-
-            player.Id = parameters.Get<int>("@Id");
-        }
-
         public static List<RoundModel> GetRoundsByTournament(int tournamentId)
         {
             List<RoundModel> rounds = new List<RoundModel>();
@@ -102,15 +86,44 @@ namespace CustomTournamentsLibrary.DataAccess
             return rounds;
         }
 
-        public static List<LeagueParticipantModel> GetLeagueParticipantsByTournament(TournamentModel tournament)
+        public static List<LeagueParticipantModel> GetLeagueParticipantsForDisplay(int tournamentId)
         {
             DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@TournamentId", tournament.Id);
+            parameters.Add("@TournamentId", tournamentId);
             
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
             {
-                return connection.Query<LeagueParticipantModel>("dbo.SP_GetLeagueParticipants", parameters, commandType: CommandType.StoredProcedure).ToList();
+                return connection.Query<LeagueParticipantModel>
+                    ("dbo.SP_GetLeagueParticipantsForDisplay", parameters, commandType: CommandType.StoredProcedure).ToList();
             }
+        }
+
+        private static List<LeagueParticipantModel> GetTournamentParticipantsByTournament(int tournamentId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@TournamentId", tournamentId);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                return connection.Query<LeagueParticipantModel>
+                    ("dbo.SP_GetLeagueParticipantsByTournament", parameters, commandType: CommandType.StoredProcedure).ToList();
+            }
+        }
+
+        public static void CreatePlayer(PlayerModel player)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@FirstName", player.FirstName);
+            parameters.Add("@LastName", player.LastName);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                connection.Execute("dbo.SP_InsertNewPlayer", parameters, commandType: CommandType.StoredProcedure);
+            }
+
+            player.Id = parameters.Get<int>("@Id");
         }
 
         public static void CreateTeam(TeamModel team)
@@ -270,22 +283,75 @@ namespace CustomTournamentsLibrary.DataAccess
             GameParticipantModel homeTeam = game.Competitors[0];
             GameParticipantModel awayTeam = game.Competitors[1];
 
-            LeagueParticipantModel winner;
-            LeagueParticipantModel loser;
+            LeagueParticipantModel winner = new LeagueParticipantModel();
+            LeagueParticipantModel loser = new LeagueParticipantModel();
 
             if (homeTeam.Score > awayTeam.Score)
             {
-                
+                winner = GetTournamentParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == homeTeam.TeamName);
+                loser = GetTournamentParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == awayTeam.TeamName);
+
+                winner.Victories += 1;
+                winner.Scored += homeTeam.Score;
+                winner.Conceded += awayTeam.Score;
+                winner.Points += 3;
+
+                loser.Defeats += 1;
+                loser.Scored += awayTeam.Score;
+                loser.Conceded += homeTeam.Score;
             }
 
-            if (homeTeam.Score == awayTeam.Score)
+            else if (homeTeam.Score == awayTeam.Score)
             {
+                winner = GetTournamentParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == awayTeam.TeamName);
+                loser = GetTournamentParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == homeTeam.TeamName);
 
+                winner.Draws += 1;
+                winner.Scored += awayTeam.Score;
+                winner.Conceded += homeTeam.Score;
+                winner.Points += 1;
+
+                loser.Draws += 1;
+                loser.Scored += homeTeam.Score;
+                loser.Conceded += awayTeam.Score;
+                loser.Points += 1;
             }
 
-            if (awayTeam.Score > homeTeam.Score)
+            else
             {
+                winner = GetTournamentParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == awayTeam.TeamName);
+                loser = GetTournamentParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == homeTeam.TeamName);
 
+                winner.Victories += 1;
+                winner.Scored += awayTeam.Score;
+                winner.Conceded += homeTeam.Score;
+                winner.Points += 3;
+
+                loser.Defeats += 1;
+                loser.Scored += homeTeam.Score;
+                loser.Conceded += awayTeam.Score;
+            }
+
+            UpdateThisLeagueParticipant(winner);
+            UpdateThisLeagueParticipant(loser);
+        }
+
+        private static void UpdateThisLeagueParticipant(LeagueParticipantModel team)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@Id", team.Id);
+            parameters.Add("@Victories", team.Victories);
+            parameters.Add("@Draws", team.Draws);
+            parameters.Add("@Defeats", team.Defeats);
+            parameters.Add("@Scored", team.Scored);
+            parameters.Add("@Conceded", team.Conceded);
+            parameters.Add("@ScoreDifferential", team.Scored - team.Conceded);
+            parameters.Add("@Points", team.Points);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                connection.Execute("dbo.SP_UpdateLeagueParticipant", parameters, commandType: CommandType.StoredProcedure);
             }
         }
     }
