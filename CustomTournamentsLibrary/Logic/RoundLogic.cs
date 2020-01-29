@@ -42,8 +42,8 @@ namespace CustomTournamentsLibrary.Logic
                     SqlDataHandler.CreateGame(game);
 
                     //  Create 1st game competitors
-                    game.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = game.Id, TeamName = shortenedTeamList[teamIndexer].TeamName });
-                    game.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = game.Id, TeamName = participants[0].TeamName });
+                    game.Competitors.Add(new GameParticipantModel { TournamentId = tournament.Id, RoundId = round.Id, GameId = game.Id, TeamName = shortenedTeamList[teamIndexer].TeamName });
+                    game.Competitors.Add(new GameParticipantModel { TournamentId = tournament.Id, RoundId = round.Id, GameId = game.Id, TeamName = participants[0].TeamName });
 
                     foreach  (GameParticipantModel participant in game.Competitors)
                     {
@@ -63,8 +63,8 @@ namespace CustomTournamentsLibrary.Logic
                         SqlDataHandler.CreateGame(nextGame);
 
                         //  Create next game's competitors
-                        nextGame.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[homeIndex].TeamName });
-                        nextGame.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[awayIndex].TeamName });
+                        nextGame.Competitors.Add(new GameParticipantModel { TournamentId = tournament.Id, RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[homeIndex].TeamName });
+                        nextGame.Competitors.Add(new GameParticipantModel { TournamentId = tournament.Id, RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[awayIndex].TeamName });
 
                         foreach (GameParticipantModel participant in nextGame.Competitors)
                         {
@@ -108,8 +108,8 @@ namespace CustomTournamentsLibrary.Logic
             //  Create 1st game in the round
             GameModel game = new GameModel(round.TournamentId, round.Id, true);
             SqlDataHandler.CreateGame(game);
-            game.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = game.Id, TeamName = shortenedTeamList[teamIndexer].TeamName });
-            game.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = game.Id, TeamName = roundParticipants[0].TeamName });
+            game.Competitors.Add(new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = game.Id, TeamName = shortenedTeamList[teamIndexer].TeamName });
+            game.Competitors.Add(new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = game.Id, TeamName = roundParticipants[0].TeamName });
 
             foreach (GameParticipantModel participant in game.Competitors)
             {
@@ -126,8 +126,8 @@ namespace CustomTournamentsLibrary.Logic
 
                 GameModel nextGame = new GameModel(round.TournamentId, round.Id, true);
                 SqlDataHandler.CreateGame(nextGame);
-                nextGame.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[homeIndex].TeamName });
-                nextGame.Competitors.Add(new GameParticipantModel { RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[awayIndex].TeamName });
+                nextGame.Competitors.Add(new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[homeIndex].TeamName });
+                nextGame.Competitors.Add(new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[awayIndex].TeamName });
 
                 foreach (GameParticipantModel participant in nextGame.Competitors)
                 {

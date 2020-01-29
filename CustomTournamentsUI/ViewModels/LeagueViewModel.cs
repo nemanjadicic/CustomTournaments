@@ -20,6 +20,7 @@ namespace CustomTournamentsUI.ViewModels
         private BindableCollection<GameModel> _gameList;
         private GameModel _selectedGame;
         private bool _canEnterResult = true;
+        private BindableCollection<LeagueParticipantModel> _leagueParticipants;
 
 
 
@@ -116,7 +117,36 @@ namespace CustomTournamentsUI.ViewModels
             }
         }
 
-        
+
+
+
+
+        //          LEAGUE TABLE
+        public BindableCollection<LeagueParticipantModel> LeagueParticipants
+        {
+            get { return _leagueParticipants; }
+            set 
+            { 
+                _leagueParticipants = value;
+                NotifyOfPropertyChange(() => LeagueParticipants);
+            }
+        }
+        private void OrderTeamsForDisplay()
+        {
+            foreach (LeagueParticipantModel team in _leagueParticipants)
+            {
+                team.ScoreDifferential = team.Scored - team.Conceded;
+            }
+            
+            _leagueParticipants.OrderBy(team => team.Points).ThenBy(team => team.ScoreDifferential).ThenBy(team => team.Scored);
+            
+            for (int num = 0; num < _leagueParticipants.Count; num++)
+            {
+                _leagueParticipants[num].Id = num + 1;
+            }
+        }
+
+
 
 
 
@@ -146,6 +176,9 @@ namespace CustomTournamentsUI.ViewModels
             _roundList = new BindableCollection<RoundModel>(SqlDataHandler.GetRoundsByTournament(currentTournament.Id));
             _selectedRound = _roundList[0];
             _gameList = new BindableCollection<GameModel>(SelectedRound.Games);
+            _leagueParticipants = new BindableCollection<LeagueParticipantModel>(SqlDataHandler.GetLeagueParticipantsByTournament(currentTournament));
+
+            OrderTeamsForDisplay();
         }
     }
 }

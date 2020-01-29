@@ -102,6 +102,17 @@ namespace CustomTournamentsLibrary.DataAccess
             return rounds;
         }
 
+        public static List<LeagueParticipantModel> GetLeagueParticipantsByTournament(TournamentModel tournament)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@TournamentId", tournament.Id);
+            
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                return connection.Query<LeagueParticipantModel>("dbo.SP_GetLeagueParticipants", parameters, commandType: CommandType.StoredProcedure).ToList();
+            }
+        }
+
         public static void CreateTeam(TeamModel team)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -216,6 +227,7 @@ namespace CustomTournamentsLibrary.DataAccess
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@TournamentId", participant.TournamentId);
             parameters.Add("RoundId", participant.RoundId);
             parameters.Add("@GameId", participant.GameId);
             parameters.Add("@TeamName", participant.TeamName);
@@ -250,6 +262,30 @@ namespace CustomTournamentsLibrary.DataAccess
                 {
                     connection.Execute("dbo.SP_UpdateGameParticipantScore", parameters, commandType: CommandType.StoredProcedure);
                 }
+            }
+        }
+
+        public static void UpdateLeagueParticipants(GameModel game)
+        {
+            GameParticipantModel homeTeam = game.Competitors[0];
+            GameParticipantModel awayTeam = game.Competitors[1];
+
+            LeagueParticipantModel winner;
+            LeagueParticipantModel loser;
+
+            if (homeTeam.Score > awayTeam.Score)
+            {
+                
+            }
+
+            if (homeTeam.Score == awayTeam.Score)
+            {
+
+            }
+
+            if (awayTeam.Score > homeTeam.Score)
+            {
+
             }
         }
     }

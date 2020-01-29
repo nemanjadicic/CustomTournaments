@@ -26,7 +26,7 @@
         </Grid>
 
         <!-- CONTENT GRID -->
-        <Grid Margin="20,50,20,0">
+        <Grid Margin="10,50,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="1.5*" />
@@ -77,16 +77,32 @@
             </Grid>
 
             <!-- Right Part -->
-            <Grid Margin="20,0,0,0" Grid.Column="1">
+            <Grid Margin="10,0,5,0" Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="350" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="League Table" HorizontalAlignment="Center" Margin="0,0,0,2" />
+                <TextBlock Grid.Row="0" Text="League Table" HorizontalAlignment="Center" Margin="0,0,0,5" />
 
-                <DataGrid x:Name="LeagueParticipantsList" FontSize="14" 
-                          AlternatingRowBackground="Silver" Grid.Row="1" />
+                <DataGrid x:Name="LeagueParticipants" FontSize="16" AlternatingRowBackground="LightGray" Grid.Row="1" 
+                          VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden"
+                          AutoGenerateColumns="False" IsReadOnly="True" CanUserResizeColumns="False"
+                          CanUserResizeRows="False" CanUserSortColumns="False" HorizontalAlignment="Center">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" Binding="{Binding Id}" />
+                        <DataGridTextColumn Header="Team" Binding="{Binding TeamName}" />
+                        <DataGridTextColumn Header="W" Binding="{Binding Victories}" />
+                        <DataGridTextColumn Header="D" Binding="{Binding Draws}" />
+                        <DataGridTextColumn Header="L" Binding="{Binding Defeats}" />
+                        <DataGridTextColumn Header="F" Binding="{Binding Scored}" />
+                        <DataGridTextColumn Header="C" Binding="{Binding Conceded}" />
+                        <DataGridTextColumn Header="Diff" Binding="{Binding ScoreDifferential}" />
+                        <DataGridTextColumn Header="Points" Binding="{Binding Points}" />
+                    </DataGrid.Columns>
+                    
+                </DataGrid>
 
             </Grid>
 

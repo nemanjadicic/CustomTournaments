@@ -108,8 +108,10 @@ namespace CustomTournamentsUI.ViewModels
             _leagueView.SelectedGame.Unplayed = false;
 
             SqlDataHandler.UpdateGameScoreAndStatus(_leagueView.SelectedGame);
+            SqlDataHandler.UpdateLeagueParticipants(_leagueView.SelectedGame);
 
             _leagueView.GameList.Refresh();
+            _leagueView.LeagueParticipants.Refresh();
             
             TryClose();
         }

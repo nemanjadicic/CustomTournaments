@@ -9,6 +9,7 @@ namespace CustomTournamentsLibrary.Models
     public class GameParticipantModel
     {
         public int Id { get; set; }
+        public int TournamentId { get; set; }
         public int RoundId { get; set; }
         public int GameId { get; set; }
         public GameModel PreviousCupGame { get; set; } // nullable
