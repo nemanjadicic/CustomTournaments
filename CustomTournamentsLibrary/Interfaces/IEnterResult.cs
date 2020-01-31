@@ -11,5 +11,6 @@ namespace CustomTournamentsLibrary.Interfaces
         BindableCollection<GameModel> GameList { get; set; }
         GameModel SelectedGame { get; set; }
         BindableCollection<LeagueParticipantModel> LeagueParticipants { get; set; }
+        bool CanEnterResult { get; set; }
     }
 }

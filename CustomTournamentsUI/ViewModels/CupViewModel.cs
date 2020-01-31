@@ -62,6 +62,11 @@ namespace CustomTournamentsUI.ViewModels
         }
         public void RoundListSelectionChanged()
         {
+            if (SelectedRound.Games.Count == 0)
+            {
+                SelectedRound.Games = SqlDataHandler.GetGamesByRound(SelectedRound); 
+            }
+            
             if (UnplayedOnly)
             {
                 GameList = new BindableCollection<GameModel>(SelectedRound.Games.Where(game => game.Unplayed == true));
@@ -123,7 +128,7 @@ namespace CustomTournamentsUI.ViewModels
             }
         }
 
-
+        
 
 
 

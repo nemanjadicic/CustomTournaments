@@ -125,13 +125,13 @@ namespace CustomTournamentsUI.ViewModels
             else
             {
                 SqlDataHandler.UpdateGameParticipantAsCupRoundWinner(tournamentView.SelectedGame);
-
+                
                 if (RoundComplete())
                 {
-                    List<TeamModel> nextRoundParticipants = SqlDataHandler.GetRoundWinners(tournamentView.SelectedRound.Id);
-
                     int currentRoundIndex = tournamentView.SelectedRound.RoundNumber - 1;
 
+                    List<TeamModel> nextRoundParticipants = SqlDataHandler.GetRoundWinners(tournamentView.SelectedRound.Id);
+                    
                     if (tournamentView.SelectedRound.RoundNumber < tournamentView.RoundList.Count)
                     {
                         RoundModel nextRound = tournamentView.CurrentTournament.Rounds[currentRoundIndex + 1];
@@ -141,6 +141,7 @@ namespace CustomTournamentsUI.ViewModels
                 }
             }
 
+            tournamentView.CanEnterResult = false;
             tournamentView.GameList.Refresh();
 
             TryClose();

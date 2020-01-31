@@ -86,6 +86,32 @@ namespace CustomTournamentsLibrary.DataAccess
             return rounds;
         }
 
+        public static List<GameModel> GetGamesByRound(RoundModel round)
+        {
+            List<GameModel> games = new List<GameModel>();
+            
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@RoundId", round.Id);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                games = connection.Query<GameModel>("dbo.SP_GetGamesByRound", parameters, commandType: CommandType.StoredProcedure).ToList();
+            }
+
+            foreach (GameModel game in games)
+            {
+                parameters = new DynamicParameters();
+                parameters.Add("@GameId", game.Id);
+
+                using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+                {
+                    game.Competitors = connection.Query<GameParticipantModel>("dbo.SP_GetGameParticipantsByGame", parameters, commandType: CommandType.StoredProcedure).ToList();
+                }
+            }
+
+            return games;
+        }
+
         public static List<LeagueParticipantModel> GetLeagueParticipantsForDisplay(int tournamentId)
         {
             DynamicParameters parameters = new DynamicParameters();
