@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using CustomTournamentsLibrary.DataAccess;
 using CustomTournamentsLibrary.Interfaces;
+using CustomTournamentsLibrary.Logic;
 using CustomTournamentsLibrary.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace CustomTournamentsUI.ViewModels
     public class EnterResultViewModel : Screen
     {
         //          BACKING FIELDS
-        IEnterResult _leagueView;
+        IEnterResult tournamentView;
+
         private string _homeScore;
         private string _awayScore;
         private bool _canEnterResult;
@@ -87,7 +89,14 @@ namespace CustomTournamentsUI.ViewModels
                 errors.Add("Team's score must not be lower than 0.");
             }
 
-            bool somethingWrong = (!homeScoreValid || !awayScoreValid) || (homeScoreValue < 0 || awayScoreValue < 0);
+            if (!tournamentView.CurrentTournament.IsLeague && homeScoreValue == awayScoreValue)
+            {
+                errors.Add("One of two teams must be a winner.");
+            }
+
+            bool somethingWrong = (!homeScoreValid || !awayScoreValid) 
+                || (homeScoreValue < 0 || awayScoreValue < 0) 
+                || (!tournamentView.CurrentTournament.IsLeague && homeScoreValue == awayScoreValue);
 
             if (somethingWrong)
             {
@@ -105,14 +114,55 @@ namespace CustomTournamentsUI.ViewModels
             HomeTeam.Score = int.Parse(HomeScore);
             AwayTeam.Score = int.Parse(AwayScore);
 
-            _leagueView.SelectedGame.Unplayed = false;
+            tournamentView.SelectedGame.Unplayed = false;
 
-            SqlDataHandler.UpdateGameScoreAndStatus(_leagueView.SelectedGame);
-            SqlDataHandler.UpdateLeagueParticipants(_leagueView.SelectedGame);
+            SqlDataHandler.UpdateGameScoreAndStatus(tournamentView.SelectedGame);
 
-            _leagueView.GameList.Refresh();
+            if (tournamentView.CurrentTournament.IsLeague)
+            {
+                SqlDataHandler.UpdateLeagueParticipants(tournamentView.SelectedGame); 
+            }
+            else
+            {
+                SqlDataHandler.UpdateGameParticipantAsCupRoundWinner(tournamentView.SelectedGame);
+
+                if (RoundComplete())
+                {
+                    List<TeamModel> nextRoundParticipants = SqlDataHandler.GetRoundWinners(tournamentView.SelectedRound.Id);
+
+                    int currentRoundIndex = tournamentView.SelectedRound.RoundNumber - 1;
+
+                    if (tournamentView.SelectedRound.RoundNumber < tournamentView.RoundList.Count)
+                    {
+                        RoundModel nextRound = tournamentView.CurrentTournament.Rounds[currentRoundIndex + 1];
+
+                        RoundLogic.CreateCupRoundGames(nextRoundParticipants, nextRound);
+                    }
+                }
+            }
+
+            tournamentView.GameList.Refresh();
 
             TryClose();
+        }
+        private bool RoundComplete()
+        {
+            List<GameModel> roundGames = tournamentView.SelectedRound.Games;
+            List<bool> gameStatuses = new List<bool>();
+
+            foreach (GameModel game in roundGames)
+            {
+                gameStatuses.Add(game.Unplayed);
+            }
+
+            if (gameStatuses.Contains(true))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
 
@@ -121,10 +171,10 @@ namespace CustomTournamentsUI.ViewModels
 
         public EnterResultViewModel(IEnterResult previousView)
         {
-            _leagueView = previousView;
+            tournamentView = previousView;
 
-            HomeTeam = _leagueView.SelectedGame.Competitors[0];
-            AwayTeam = _leagueView.SelectedGame.Competitors[1];
+            HomeTeam = tournamentView.SelectedGame.Competitors[0];
+            AwayTeam = tournamentView.SelectedGame.Competitors[1];
         }
     }
 }

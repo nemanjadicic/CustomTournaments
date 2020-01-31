@@ -34,7 +34,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //                  TOURNAMENT NAME AND TYPE
+        //          TOURNAMENT NAME AND TYPE
         public string TournamentName
         {
             get { return _tournamentName; }
@@ -82,7 +82,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //                  TEAMS MANAGEMENT
+        //          TEAMS MANAGEMENT
         public BindableCollection<TeamModel> AvailableTeams
         {
             get { return _availableTeams; }
@@ -162,7 +162,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //                  ENTRY FEE / TOURNAMENT PRIZES MANAGEMENT
+        //          ENTRY FEE / TOURNAMENT PRIZES MANAGEMENT
         public decimal EntryFee
         {
             get { return _entryFee; }
@@ -218,7 +218,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
         
-        //                  TOURNAMENT CREATION
+        //          TOURNAMENT CREATION
         public bool CanCreateTournament
         {
             get { return _canCreateTournament; }
@@ -305,7 +305,7 @@ namespace CustomTournamentsUI.ViewModels
 
         
         
-        //                  CONSTRUCTOR
+        //          CONSTRUCTOR
         public CreateTournamentViewModel()
         {
             _tournamentTeams = new BindableCollection<TeamModel>();

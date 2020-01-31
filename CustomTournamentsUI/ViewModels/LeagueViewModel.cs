@@ -9,7 +9,6 @@ namespace CustomTournamentsUI.ViewModels
     public class LeagueViewModel : Screen, IEnterResult
     {
         //          BACKING FIELDS
-        TournamentModel _currentTournament;
         private string _tournamentName;
         private BindableCollection<RoundModel> _roundList;
         private RoundModel _selectedRound;
@@ -23,7 +22,8 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //          ROUNDS AND GAMES
+        //          TOURNAMENT PROPERTIES
+        public TournamentModel CurrentTournament { get; set; }
         public string TournamentName
         {
             get { return _tournamentName; }
@@ -33,6 +33,12 @@ namespace CustomTournamentsUI.ViewModels
                 NotifyOfPropertyChange(() => TournamentName);
             }
         }
+
+
+
+
+
+        //          ROUNDS AND GAMES
         public BindableCollection<RoundModel> RoundList
         {
             get { return _roundList; }
@@ -87,15 +93,15 @@ namespace CustomTournamentsUI.ViewModels
                 {
                     SelectedRound.Games = value.ToList();
                 }
-                
-                
+
+
                 NotifyOfPropertyChange(() => GameList);
             }
         }
         public GameModel SelectedGame
         {
             get { return _selectedGame; }
-            set 
+            set
             {
                 _selectedGame = value;
                 NotifyOfPropertyChange(() => SelectedGame);
@@ -113,7 +119,6 @@ namespace CustomTournamentsUI.ViewModels
                 }
             }
         }
-
 
 
 
@@ -139,22 +144,19 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-
-
-
         //          LEAGUE TABLE
         public BindableCollection<LeagueParticipantModel> LeagueParticipants
         {
             get { return _leagueParticipants; }
-            set 
-            { 
+            set
+            {
                 _leagueParticipants = value;
                 NotifyOfPropertyChange(() => LeagueParticipants);
             }
         }
         public void RefreshTable()
         {
-            LeagueParticipants = new BindableCollection<LeagueParticipantModel>(SqlDataHandler.GetLeagueParticipantsForDisplay(_currentTournament.Id));
+            LeagueParticipants = new BindableCollection<LeagueParticipantModel>(SqlDataHandler.GetLeagueParticipantsForDisplay(CurrentTournament.Id));
 
             ScoreDifferenceAndPositionNumber();
         }
@@ -173,23 +175,15 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-
-
-        
-
-
-
-
-
         public LeagueViewModel(TournamentModel selectedTournament)
         {
-            _currentTournament = selectedTournament;
-            
-            _tournamentName = _currentTournament.TournamentName;
-            _roundList = new BindableCollection<RoundModel>(SqlDataHandler.GetRoundsByTournament(_currentTournament.Id));
+            CurrentTournament = selectedTournament;
+
+            _tournamentName = CurrentTournament.TournamentName;
+            _roundList = new BindableCollection<RoundModel>(SqlDataHandler.GetRoundsByTournament(CurrentTournament.Id));
             _selectedRound = _roundList[0];
             _gameList = new BindableCollection<GameModel>(SelectedRound.Games);
-            _leagueParticipants = new BindableCollection<LeagueParticipantModel>(SqlDataHandler.GetLeagueParticipantsForDisplay(_currentTournament.Id));
+            _leagueParticipants = new BindableCollection<LeagueParticipantModel>(SqlDataHandler.GetLeagueParticipantsForDisplay(CurrentTournament.Id));
 
             ScoreDifferenceAndPositionNumber();
         }

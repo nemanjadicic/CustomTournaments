@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     
     <StackPanel>
-        <!-- Title -->
+        <!-- HEADER -->
         <TextBlock Text="Home" FontSize="36" TextAlignment="Left" 
                    Margin="0,0,0,80" FontWeight="SemiBold" FontStyle="Oblique"
                    Foreground="Blue"/>

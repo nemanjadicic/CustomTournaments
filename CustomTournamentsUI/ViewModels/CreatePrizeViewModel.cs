@@ -12,7 +12,7 @@ namespace CustomTournamentsUI.ViewModels
 {
     public class CreatePrizeViewModel : Screen
     {
-        //                  BACKING FIELDS
+        //          BACKING FIELDS
         ITournamentCreator _tournamentCreationView;
 
         private string _placeNumber;
@@ -25,7 +25,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //              PROPERTIES AND METHODS
+        //          PROPERTIES AND METHODS
         public string PlaceNumber
         {
             get { return _placeNumber; }

@@ -11,7 +11,7 @@ namespace CustomTournamentsUI.ViewModels
 {
     public class HomeViewModel : Screen
     {
-        //                  BACKING FIELDS
+        //          BACKING FIELDS
         private BindableCollection<TournamentModel> _existingTournaments;
         private TournamentModel _selectedTournament;
         private bool _canLoadTournament;
@@ -20,7 +20,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //                  PROPERTIES
+        //          PROPERTIES
         public BindableCollection<TournamentModel> ExistingTournaments
         {
             get { return _existingTournaments; }
@@ -63,7 +63,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //                  METHODS AND CONSTRUCTOR
+        //          METHODS AND CONSTRUCTOR
         public void LoadTournament()
         {
             var conductor = Parent as IConductor;
@@ -74,19 +74,22 @@ namespace CustomTournamentsUI.ViewModels
             }
             else
             {
-                // TODO - Implement this
+                conductor.ActivateItem(new CupViewModel(SelectedTournament));
             }
         }
-        
         public void CreateNewTournament()
         {
             var conductor = Parent as IConductor;
             conductor.ActivateItem(new CreateTournamentViewModel());
         }
-
         public HomeViewModel()
         {
             _existingTournaments = new BindableCollection<TournamentModel>(SqlDataHandler.GetAllTournaments());
+
+            foreach (TournamentModel tournament in _existingTournaments)
+            {
+                tournament.Rounds = SqlDataHandler.GetRoundsByTournament(tournament.Id);
+            }
         }
     }
 }

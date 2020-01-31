@@ -93,6 +93,8 @@ namespace CustomTournamentsLibrary.Logic
             }
         }
 
+
+
         public static void CreateCupRoundGames(List<TeamModel> roundParticipants, RoundModel round)
         {
             int halfOfTeams = roundParticipants.Count / 2;
@@ -136,6 +138,8 @@ namespace CustomTournamentsLibrary.Logic
             }
         }
 
+
+
         public static void CreateDummyTeams(TournamentModel tournament)
         {
             if (tournament.IsLeague)
@@ -148,7 +152,7 @@ namespace CustomTournamentsLibrary.Logic
             }
             else
             {
-                int[] cupQuota = { 2, 4, 8, 16, 32, 64 };
+                int[] cupQuota = { 2, 4, 8, 16, 32, 64, 128 };
                 int dummyRequirements = 0;
 
                 foreach (int quotaNumber in cupQuota)
@@ -159,15 +163,21 @@ namespace CustomTournamentsLibrary.Logic
 
                         for (int x = 1; x <= dummyRequirements; x++)
                         {
-                            TeamModel dummy = new TeamModel($"Dummy Team {x}");
+                            TeamModel dummy = new TeamModel($"Dummy Team");
                             tournament.ParticipatingTeams.Add(dummy);
                         }
 
                         break;
                     }
+                    else if (tournament.ParticipatingTeams.Count == quotaNumber)
+                    {
+                        break;
+                    }
                 }
             }
         }
+
+
 
         private static int GetNumberOfRounds(TournamentModel tournament)
         {
@@ -204,6 +214,8 @@ namespace CustomTournamentsLibrary.Logic
 
             return roundsCount;
         }
+
+
 
         private static List<TeamModel> RandomizeTeamOrder(List<TeamModel> teams)
         {

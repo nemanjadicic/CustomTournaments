@@ -12,7 +12,7 @@ namespace CustomTournamentsUI.ViewModels
 {
     public class CreateTeamViewModel : Screen
     {
-        //                  BACKING FIELDS
+        //          BACKING FIELDS
         ITournamentCreator _tournamentCreationView;
         
         private string _firstName;
@@ -31,7 +31,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //                  PLAYER RELATED PROPERTIES AND METHODS
+        //          PLAYER RELATED PROPERTIES AND METHODS
         public string FirstName
         {
             get { return _firstName; }
@@ -92,7 +92,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //                  TEAM RELATED PROPERTIES AND METHODS
+        //          TEAM RELATED PROPERTIES AND METHODS
         public string TeamName
         {
             get { return _teamName; }
@@ -245,14 +245,13 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //                  CONSTRUCTORS
+        //          CONSTRUCTORS
         public CreateTeamViewModel(ITournamentCreator previousView)
         {
             _tournamentCreationView = previousView;
             _availablePlayers = new BindableCollection<PlayerModel>(SqlDataHandler.GetAllPlayers());
             _teamMembers = new BindableCollection<PlayerModel>();
         }
-
         public CreateTeamViewModel()
         {
             _availablePlayers = new BindableCollection<PlayerModel>(SqlDataHandler.GetAllPlayers());

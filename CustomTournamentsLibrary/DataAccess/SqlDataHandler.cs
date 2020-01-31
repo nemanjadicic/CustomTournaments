@@ -110,6 +110,35 @@ namespace CustomTournamentsLibrary.DataAccess
             }
         }
 
+        public static List<TeamModel> GetRoundWinners(int roundId)
+        {
+            List<TeamModel> roundWinners = new List<TeamModel>();
+            List<string> winnerNames = new List<string>();
+
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@RoundId", roundId);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                winnerNames = connection.Query<string>("dbo.SP_GetWinnerNamesByRound", parameters, commandType: CommandType.StoredProcedure).ToList();
+            }
+
+            foreach (string name in winnerNames)
+            {
+                parameters = new DynamicParameters();
+
+                parameters.Add("TeamName", name);
+                
+                using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+                {
+                    roundWinners.Add(connection.QuerySingle<TeamModel>("dbo.SP_GetTeamByName", parameters, commandType: CommandType.StoredProcedure));
+                }
+            }
+
+            return roundWinners;
+        }
+
         public static void CreatePlayer(PlayerModel player)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -275,6 +304,27 @@ namespace CustomTournamentsLibrary.DataAccess
                 {
                     connection.Execute("dbo.SP_UpdateGameParticipantScore", parameters, commandType: CommandType.StoredProcedure);
                 }
+            }
+        }
+
+        public static void UpdateGameParticipantAsCupRoundWinner(GameModel selectedGame)
+        {
+            GameParticipantModel homeTeam = selectedGame.Competitors[0];
+            GameParticipantModel awayTeam = selectedGame.Competitors[1];
+            DynamicParameters parameters = new DynamicParameters();
+            
+            if (homeTeam.Score > awayTeam.Score)
+            {
+                parameters.Add("@Id", homeTeam.Id);
+            }
+            else
+            {
+                parameters.Add("@Id", awayTeam.Id);
+            }
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                connection.Execute("dbo.SP_UpdateGameParticipantCupRoundWinner", parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
