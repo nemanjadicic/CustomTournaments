@@ -11,7 +11,8 @@ namespace CustomTournamentsLibrary.Logic
     {
         public static void CreateRounds(TournamentModel tournament)
         {
-            List<TeamModel> participants = new List<TeamModel>(RandomizeTeamOrder(tournament.ParticipatingTeams));
+            List<TeamModel> participants = tournament.ParticipatingTeams;
+            participants.Shuffle();
 
             if (tournament.IsLeague)
             {
@@ -97,43 +98,78 @@ namespace CustomTournamentsLibrary.Logic
 
         public static void CreateCupRoundGames(List<TeamModel> roundParticipants, RoundModel round)
         {
-            int halfOfTeams = roundParticipants.Count / 2;
-            List<TeamModel> shortenedTeamList = new List<TeamModel>();
-            shortenedTeamList.AddRange(roundParticipants);
-            shortenedTeamList.RemoveAt(0);
+            int numberOfGames = roundParticipants.Count / 2;
+            List<TeamModel> homeTeams = new List<TeamModel>(roundParticipants);
+            List<TeamModel> awayTeams = new List<TeamModel>();
 
-            int shortenedCount = shortenedTeamList.Count;
-            int teamIndexer = round.RoundNumber % shortenedCount;
-
-
-
-            //  Create 1st game in the round
-            GameModel game = new GameModel(round.TournamentId, round.Id, true);
-            SqlDataHandler.CreateGame(game);
-            game.Competitors.Add(new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = game.Id, TeamName = shortenedTeamList[teamIndexer].TeamName });
-            game.Competitors.Add(new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = game.Id, TeamName = roundParticipants[0].TeamName });
-
-            foreach (GameParticipantModel participant in game.Competitors)
+            if (homeTeams.Contains(homeTeams.Find(team => team.TeamName == "Dummy Team")))
             {
-                SqlDataHandler.CreateGameParticipant(participant);
-            }
-
-
-
-            // Create other games
-            for (int index = 1; index < halfOfTeams; index++)
-            {
-                int homeIndex = (round.RoundNumber + index) % shortenedCount;
-                int awayIndex = (round.RoundNumber + shortenedCount - index) % shortenedCount;
-
-                GameModel nextGame = new GameModel(round.TournamentId, round.Id, true);
-                SqlDataHandler.CreateGame(nextGame);
-                nextGame.Competitors.Add(new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[homeIndex].TeamName });
-                nextGame.Competitors.Add(new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[awayIndex].TeamName });
-
-                foreach (GameParticipantModel participant in nextGame.Competitors)
+                //  Transfer all dummy teams to awayList
+                foreach (TeamModel team in roundParticipants)
                 {
-                    SqlDataHandler.CreateGameParticipant(participant); 
+                    if (team.TeamName == "Dummy Team")
+                    {
+                        awayTeams.Add(team);
+                        homeTeams.Remove(team);
+                    }
+                }
+
+                //  Separate teams in 2 lists
+                while (awayTeams.Count != homeTeams.Count)
+                {
+                    awayTeams.Add(homeTeams[0]);
+                    homeTeams.Remove(homeTeams[0]);
+                }
+
+
+                //  Pair teams from 2 lists into game
+                for (int gameNumber = 1; gameNumber <= numberOfGames; gameNumber++)
+                {
+                    GameModel game = new GameModel(round.TournamentId, round.Id, true);
+                    SqlDataHandler.CreateGame(game);
+
+                    game.Competitors.Add
+                        (new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = game.Id, TeamName = homeTeams[0].TeamName });
+                    game.Competitors.Add
+                        (new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = game.Id, TeamName = awayTeams[0].TeamName });
+
+                    homeTeams.RemoveAt(0);
+                    awayTeams.RemoveAt(0);
+
+                    foreach (GameParticipantModel team in game.Competitors)
+                    {
+                        SqlDataHandler.CreateGameParticipant(team);
+                    }
+                }
+            }
+            else
+            {
+                //  Separate teams in 2 lists
+                while (awayTeams.Count != homeTeams.Count)
+                {
+                    awayTeams.Add(homeTeams[0]);
+                    homeTeams.Remove(homeTeams[0]);
+                }
+
+
+                //  Pair teams from 2 lists into game
+                for (int gameNumber = 1; gameNumber <= numberOfGames; gameNumber++)
+                {
+                    GameModel game = new GameModel(round.TournamentId, round.Id, true);
+                    SqlDataHandler.CreateGame(game);
+
+                    game.Competitors.Add
+                        (new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = game.Id, TeamName = homeTeams[0].TeamName });
+                    game.Competitors.Add
+                        (new GameParticipantModel { TournamentId = round.TournamentId, RoundId = round.Id, GameId = game.Id, TeamName = awayTeams[0].TeamName });
+
+                    homeTeams.RemoveAt(0);
+                    awayTeams.RemoveAt(0);
+
+                    foreach (GameParticipantModel team in game.Competitors)
+                    {
+                        SqlDataHandler.CreateGameParticipant(team);
+                    }
                 }
             }
         }
@@ -213,15 +249,6 @@ namespace CustomTournamentsLibrary.Logic
             }
 
             return roundsCount;
-        }
-
-
-
-        private static List<TeamModel> RandomizeTeamOrder(List<TeamModel> teams)
-        {
-            teams.Shuffle();
-
-            return teams;
         }
     }
 }
