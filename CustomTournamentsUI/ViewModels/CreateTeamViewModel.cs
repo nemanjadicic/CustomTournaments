@@ -181,9 +181,9 @@ namespace CustomTournamentsUI.ViewModels
         public void ValidateAllData()
         {
             List<string> errors = new List<string>();
-
             List<TeamModel> existingTeams = SqlDataHandler.GetAllTeams();
             List<string> usedNames = new List<string>();
+            string nameLower = TeamName.ToLower();
 
             foreach (TeamModel team in existingTeams)
             {
@@ -200,12 +200,20 @@ namespace CustomTournamentsUI.ViewModels
                 errors.Add("Team must have a name.");
             }
 
+            if (nameLower.Contains("dummy"))
+            {
+                errors.Add(@"Team name must not contain word ""dummy"".");
+            }
+
             if (TeamMembers.Count == 0)
             {
                 errors.Add("Team must have at least 1 member.");
             }
 
-            if (usedNames.Contains(TeamName) || String.IsNullOrWhiteSpace(TeamName) || TeamMembers.Count == 0)
+            bool somethingWrong = usedNames.Contains(TeamName) || String.IsNullOrWhiteSpace(TeamName)
+                || nameLower.Contains("dummy") || TeamMembers.Count == 0;
+
+            if (somethingWrong)
             {
                 CanCreateTeam = false;
                 ErrorMessage = $"* {string.Join(" ", errors)}";
