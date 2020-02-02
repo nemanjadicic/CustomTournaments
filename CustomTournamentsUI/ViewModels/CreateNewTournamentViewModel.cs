@@ -16,16 +16,19 @@ namespace CustomTournamentsUI.ViewModels
         private bool _isLeague;
         private bool _isCup;
         private bool _canClickRadioButton;
+        private bool _homeAndAway;
+        private int _victoryPoints;
+        private int _drawPoints;
+        private int _officialScore;
+        private decimal _entryFee;
+        private BindableCollection<PrizeModel> _tournamentPrizes;
+        private PrizeModel _selectedPrize;
+        private bool _canCreatePrize;
 
         private BindableCollection<TeamModel> _availableTeams;
         private TeamModel _selectedAvailableTeam;
         private BindableCollection<TeamModel> _tournamentTeams;
         private TeamModel _selectedTournamentTeam;
-
-        private decimal _entryFee;
-        private BindableCollection<PrizeModel> _tournamentPrizes;
-        private PrizeModel _selectedPrize;
-        private bool _canCreatePrize;
 
         private bool _canCreateTournament;
         private string _errorMessage;
@@ -34,7 +37,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //          TOURNAMENT NAME AND TYPE
+        //          TOURNAMENT NAME AND FEATURES
         public string TournamentName
         {
             get { return _tournamentName; }
@@ -76,6 +79,98 @@ namespace CustomTournamentsUI.ViewModels
                 _canClickRadioButton = value;
                 NotifyOfPropertyChange(() => CanClickRadioButton);
             }
+        }
+        public bool HomeAndAway
+        {
+            get { return _homeAndAway; }
+            set 
+            { 
+                _homeAndAway = value;
+                NotifyOfPropertyChange(() => HomeAndAway);
+            }
+        }
+        public int VictoryPoints
+        {
+            get { return _victoryPoints; }
+            set 
+            { 
+                _victoryPoints = value;
+                NotifyOfPropertyChange(() => VictoryPoints);
+
+                ValidateData();
+            }
+        }
+        public int DrawPoints
+        {
+            get { return _drawPoints; }
+            set
+            { 
+                _drawPoints = value;
+                NotifyOfPropertyChange(() => DrawPoints);
+
+                ValidateData();
+            }
+        }
+        public int OfficialScore
+        {
+            get { return _officialScore; }
+            set 
+            { 
+                _officialScore = value;
+                NotifyOfPropertyChange(() => OfficialScore);
+
+                ValidateData();
+            }
+        }
+        public decimal EntryFee
+        {
+            get { return _entryFee; }
+            set
+            {
+                _entryFee = value;
+                NotifyOfPropertyChange(() => EntryFee);
+
+                if (EntryFee <= 0)
+                {
+                    CanCreatePrize = false;
+                }
+                else
+                {
+                    CanCreatePrize = true;
+                }
+            }
+        }
+        public BindableCollection<PrizeModel> TournamentPrizes
+        {
+            get { return _tournamentPrizes; }
+            set
+            {
+                _tournamentPrizes = value;
+                NotifyOfPropertyChange(() => TournamentPrizes);
+            }
+        }
+        public PrizeModel SelectedPrize
+        {
+            get { return _selectedPrize; }
+            set
+            {
+                _selectedPrize = value;
+                NotifyOfPropertyChange(() => SelectedPrize);
+            }
+        }
+        public bool CanCreatePrize
+        {
+            get { return _canCreatePrize; }
+            set
+            {
+                _canCreatePrize = value;
+                NotifyOfPropertyChange(() => CanCreatePrize);
+            }
+        }
+        public void CreatePrize()
+        {
+            var conductor = Parent as IConductor;
+            conductor.ActivateItem(new CreatePrizeViewModel(this));
         }
 
 
@@ -162,62 +257,6 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-        //          ENTRY FEE / TOURNAMENT PRIZES MANAGEMENT
-        public decimal EntryFee
-        {
-            get { return _entryFee; }
-            set
-            {
-                _entryFee = value;
-                NotifyOfPropertyChange(() => EntryFee);
-
-                if (EntryFee <= 0)
-                {
-                    CanCreatePrize = false;
-                }
-                else
-                {
-                    CanCreatePrize = true;
-                }
-            }
-        }
-        public BindableCollection<PrizeModel> TournamentPrizes
-        {
-            get { return _tournamentPrizes; }
-            set
-            {
-                _tournamentPrizes = value;
-                NotifyOfPropertyChange(() => TournamentPrizes);
-            }
-        }
-        public PrizeModel SelectedPrize
-        {
-            get { return _selectedPrize; }
-            set
-            {
-                _selectedPrize = value;
-                NotifyOfPropertyChange(() => SelectedPrize);
-            }
-        }
-        public bool CanCreatePrize
-        {
-            get { return _canCreatePrize; }
-            set
-            {
-                _canCreatePrize = value;
-                NotifyOfPropertyChange(() => CanCreatePrize);
-            }
-        }
-        public void CreatePrize()
-        {
-            var conductor = Parent as IConductor;
-            conductor.ActivateItem(new CreatePrizeViewModel(this));
-        }
-
-
-
-
-
         //          TOURNAMENT CREATION
         public bool CanCreateTournament
         {
@@ -256,7 +295,28 @@ namespace CustomTournamentsUI.ViewModels
                 errorList.Add("Please select a tournament type.");
             }
 
-            bool somethingWrong = String.IsNullOrWhiteSpace(TournamentName) || TournamentTeams.Count <= 1 || IsLeague == false && IsCup == false;
+            if (VictoryPoints <= 1)
+            {
+                errorList.Add("A team must be awarded at least 2 points for a win.");
+            }
+
+            if (DrawPoints < 1)
+            {
+                errorList.Add("Teams must be awarded at least 1 point for a draw.");
+            }
+
+            if (DrawPoints >= VictoryPoints)
+            {
+                errorList.Add("Teams must be awarded less points for a draw than a win.");
+            }
+
+            if (OfficialScore <= 0)
+            {
+                errorList.Add("A (real) team must score more than a generated Dummy Team.");
+            }
+
+            bool somethingWrong = (String.IsNullOrWhiteSpace(TournamentName)) || (TournamentTeams.Count <= 1) || (IsLeague == false && IsCup == false) 
+                || (VictoryPoints <= 1) || (DrawPoints < 1 || DrawPoints >= VictoryPoints) || (OfficialScore <= 0);
 
             if (somethingWrong)
             {
@@ -312,6 +372,9 @@ namespace CustomTournamentsUI.ViewModels
             _tournamentPrizes = new BindableCollection<PrizeModel>();
             _availableTeams = new BindableCollection<TeamModel>(SqlDataHandler.GetAllTeams());
             TournamentTeams.CollectionChanged += TournamentTeams_CollectionChanged;
+            _victoryPoints = 3;
+            _drawPoints = 1;
+            _officialScore = 3;
         }
     }
 }

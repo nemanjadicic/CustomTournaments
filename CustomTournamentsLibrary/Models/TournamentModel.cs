@@ -11,7 +11,11 @@ namespace CustomTournamentsLibrary.Models
         public int Id { get; set; }
         public string TournamentName { get; set; }
         public bool IsLeague { get; set; }
-        public decimal EntryFee { get; set; } // nullable
+        public bool HomeAndAway { get; set; } = false;
+        public int VictoryPoints { get; set; }
+        public int DrawPoints { get; set; }
+        public int OfficialScore { get; set; }
+        public decimal EntryFee { get; set; }
         public List<TeamModel> ParticipatingTeams { get; set; } = new List<TeamModel>();
         public List<PrizeModel> TournamentPrizes { get; set; } = new List<PrizeModel>();
         public List<RoundModel> Rounds { get; set; } = new List<RoundModel>();
