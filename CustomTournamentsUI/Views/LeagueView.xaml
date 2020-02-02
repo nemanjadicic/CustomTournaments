@@ -45,7 +45,8 @@
 
                     <TextBlock Text="Round:" Margin="0,0,20,0" VerticalAlignment="Center" />
                     <ComboBox x:Name="RoundList" MinWidth="60" SelectedItem="{Binding SelectedRound}"
-                              cal:Message.Attach="[Event SelectionChanged] = [Action RoundListSelectionChanged()]">
+                              cal:Message.Attach="[Event SelectionChanged] = [Action RoundListSelectionChanged()]"
+                              HorizontalContentAlignment="Center" >
 
                         <ComboBox.ItemTemplate>
                             <DataTemplate>

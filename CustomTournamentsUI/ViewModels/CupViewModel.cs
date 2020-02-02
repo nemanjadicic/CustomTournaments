@@ -16,6 +16,7 @@ namespace CustomTournamentsUI.ViewModels
         private string _tournamentName;
         private BindableCollection<RoundModel> _roundList;
         private RoundModel _selectedRound;
+        private string _roundDisplay;
         private bool _unplayedOnly = false;
         private BindableCollection<GameModel> _gameList;
         private GameModel _selectedGame;
@@ -74,6 +75,38 @@ namespace CustomTournamentsUI.ViewModels
             else
             {
                 GameList = new BindableCollection<GameModel>(SelectedRound.Games);
+            }
+
+            DisplayRound();
+        }
+        public string RoundDisplay
+        {
+            get { return _roundDisplay; }
+            set 
+            { 
+                _roundDisplay = value;
+                NotifyOfPropertyChange(() => RoundDisplay);
+            }
+        }
+        private void DisplayRound()
+        {
+            int numberOfRounds = RoundList.Count;
+
+            if (SelectedRound.RoundNumber == numberOfRounds)
+            {
+                RoundDisplay = $"Round {SelectedRound.RoundNumber} - Final";
+            }
+            else if (SelectedRound.RoundNumber == numberOfRounds - 1)
+            {
+                RoundDisplay = $"Round {SelectedRound.RoundNumber} - Semifinals";
+            }
+            else if (SelectedRound.RoundNumber == numberOfRounds - 2)
+            {
+                RoundDisplay = $"Round {SelectedRound.RoundNumber} - Quarterfinals";
+            }
+            else
+            {
+                RoundDisplay = $"Round {SelectedRound.RoundNumber}";
             }
         }
         public bool UnplayedOnly
@@ -160,6 +193,7 @@ namespace CustomTournamentsUI.ViewModels
             _roundList = new BindableCollection<RoundModel>(SqlDataHandler.GetRoundsByTournament(CurrentTournament.Id));
             _selectedRound = _roundList[0];
             _gameList = new BindableCollection<GameModel>(_selectedRound.Games);
+            DisplayRound();
         }
 
         public BindableCollection<LeagueParticipantModel> LeagueParticipants { get; set; }
