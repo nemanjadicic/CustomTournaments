@@ -1,0 +1,224 @@
+﻿<UserControl x:Class="CustomTournamentsUI.Views.CreateNewTournamentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CustomTournamentsUI.Views"
+             mc:Ignorable="d" FontSize="18" Background="AliceBlue"
+             d:DesignHeight="550" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="8*" />
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <TextBlock Text="Create New Tournament" FontSize="36" TextAlignment="Left" 
+                   Grid.Row="0" FontWeight="SemiBold" FontStyle="Oblique" Foreground="Blue"/>
+
+        <Grid Grid.Row="1" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.25*" />
+            </Grid.ColumnDefinitions>
+
+            
+            
+            
+            
+            <!-- LEFT PART -->
+            <StackPanel Grid.Column="0" Margin="20,0,15,0" >
+
+                <!-- Tournament Name -->
+                <TextBlock Text="Tournament Name:" />
+                <TextBox x:Name="TournamentName" Margin="0,2,0,3" Padding="2" TextAlignment="Center" />
+
+                
+                
+                
+                
+                <!-- Adding teams -->
+                <Grid Margin="0,20,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Select Team:" Grid.Column="0" />
+
+                    <Button Grid.Column="1" x:Name="CreateNewTeam" Foreground="Blue" Background="Transparent" 
+                            BorderBrush="Transparent">
+                        <TextBlock Text="create new team" TextDecorations="Underline" Foreground="Blue" />
+                    </Button>
+                </Grid>
+
+                <ComboBox x:Name="AvailableTeams" SelectedItem="{Binding SelectedAvailableTeam}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding TeamName}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
+                </ComboBox>
+
+                <Button x:Name="AddTeamToTournament" Content="Add Team" Margin="100,5,100,0" 
+                        Grid.Column="0" MinHeight="35" />
+
+
+
+                
+                
+                <!--Tournament Features-->
+                <GroupBox Header="Tournament Features" Margin="0,25,0,0">
+                    <StackPanel Margin="5,10,5,0">
+                        
+                        <!--Tournament Type-->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                            
+                            <TextBlock Text="Type:" FontSize="14" />
+                            <RadioButton x:Name="League" Content="League" VerticalContentAlignment="Center" FontSize="14"
+                                         Margin="20,0,5,0" IsEnabled="{Binding CanClickRadioButton}" IsChecked="{Binding IsLeague, Mode=TwoWay}" />
+                            <RadioButton x:Name="Cup" Content="Cup" VerticalContentAlignment="Center" FontSize="14"
+                                         Margin="10,0,5,0" IsEnabled="{Binding CanClickRadioButton}" IsChecked="{Binding IsCup, Mode=TwoWay}" />
+                            
+                        </StackPanel>
+                        
+                        <!--Home and Away-->
+                        <CheckBox Margin="0,0,0,15" x:Name="HomeAndAway" Content="Home and Away Games" FontSize="14" />
+
+                        <!-- Points Awarded -->
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="Teams get" FontSize="14" VerticalAlignment="Center" />
+                                <TextBox x:Name="PointsForVictory" FontSize="14" Width="60" Margin="10,0" Padding="1"
+                                         HorizontalContentAlignment="Center" />
+                                <TextBlock Text="points for a win." FontSize="14" VerticalAlignment="Center"  />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                                <TextBlock Text="Teams get" FontSize="14" VerticalAlignment="Center" />
+                                <TextBox x:Name="PointsForDraw" FontSize="14" Width="60" Margin="10,0" Padding="1"
+                                         HorizontalContentAlignment="Center" />
+                                <TextBlock Text="points for a draw." FontSize="14" VerticalAlignment="Center"  />
+                            </StackPanel>
+
+                        </StackPanel>
+
+                        <!-- Win Against Dummies -->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Teams win" FontSize="14" VerticalAlignment="Center" />
+                            <TextBox x:Name="OfficialScore" FontSize="14" Width="30" Margin="10,0,5,0" Padding="1"
+                                         HorizontalContentAlignment="Center" />
+                            <TextBlock Text=":" VerticalAlignment="Center" />
+                            <TextBox FontSize="14" Width="30" Margin="5,0,10,0" Padding="1" Text="0" IsReadOnly="True"
+                                         HorizontalContentAlignment="Center" />
+                            <TextBlock Text="against Dummy Team." FontSize="14" VerticalAlignment="Center"  />
+                        </StackPanel>
+
+                        <!-- Entry Fee and Prizes -->
+                        <Grid Margin="0,15,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Entry Fee:" Grid.Column="0" VerticalAlignment="Center" FontSize="14" />
+                            <TextBox x:Name="EntryFee" Text="0" Grid.Column="1" Padding="2" FontSize="14" 
+                             VerticalAlignment="Center" TextAlignment="Center" />
+                            <Button Grid.Column="2" x:Name="CreatePrize" Content="Create Prize" MaxHeight="40" 
+                            HorizontalAlignment="Right" Height="35" MinWidth="100" FontSize="14" />
+                        </Grid>
+
+                    </StackPanel>
+                </GroupBox>
+                
+            </StackPanel>
+            
+            
+            
+            
+            
+            <!-- RIGHT PART -->
+            <Grid Grid.Column="1" Margin="25,0,10,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="135" />
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="135" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="80"/>
+                </Grid.RowDefinitions>
+
+                
+                
+                <!-- Teams List -->
+                <TextBlock Text="Participating Teams / Players:" Grid.Row="0" />
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox x:Name="TournamentTeams" Grid.Column="0" Margin="0,2,0,5" 
+                             MinHeight="120" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                             SelectedItem="{Binding SelectedTournamentTeam}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TeamName}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                    <Button x:Name="RemoveTeamFromTournament" Grid.Column="1" VerticalAlignment="Center" Content="Remove Team" 
+                            MinHeight="40" Margin="10,0,0,0"/>
+                </Grid>
+
+
+
+                <!-- Prizes List -->
+                <TextBlock Text="Tournament Prizes:" Grid.Row="2" />
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox x:Name="TournamentPrizes" Grid.Column="0" Margin="0,2,0,5" 
+                             MinHeight="120" ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                             SelectedItem="{Binding SelectedPrize}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PrizeDisplay}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                    <Button x:Name="RemovePrizeFromTournament" Grid.Column="1" VerticalAlignment="Center" Content="Remove Prize" 
+                            MinHeight="40" Margin="10,0,0,0" />
+                </Grid>
+
+
+                
+                <!-- Error Message -->
+                <TextBlock Grid.Row="4" Text="{Binding ErrorMessage}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                       TextWrapping="Wrap" FontSize="12" Foreground="Red"/>
+                
+
+                
+                <!-- Create Tournament Button -->
+                <Button Grid.Row="5" x:Name="CreateTournament" Content="Create Tournament" FontSize="28" FontWeight="SemiBold"
+                       Margin="120,10,0,10" Grid.Column="1" IsEnabled="{Binding CanCreateTournament}" />
+                
+            </Grid>
+
+        </Grid>
+        
+    </Grid>
+    
+</UserControl>
