@@ -86,21 +86,21 @@
                         
                         <!--Home and Away-->
                         <CheckBox Margin="0,0,0,15" x:Name="HomeAndAway" Content="Home and Away Games" FontSize="14"
-                                  VerticalContentAlignment="Center"/>
+                                  VerticalContentAlignment="Center" IsEnabled="{Binding CanClickHomeAway}"/>
 
                         <!-- Points Awarded -->
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                 <TextBlock Text="Teams get" FontSize="14" VerticalAlignment="Center" />
                                 <TextBox x:Name="VictoryPoints" FontSize="14" Width="50" Margin="10,0" Padding="1"
-                                         HorizontalContentAlignment="Center" />
+                                         HorizontalContentAlignment="Center" IsEnabled="{Binding CanEnterPoints}" />
                                 <TextBlock Text="points for a win." FontSize="14" VerticalAlignment="Center"  />
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                                 <TextBlock Text="Teams get" FontSize="14" VerticalAlignment="Center" />
                                 <TextBox x:Name="DrawPoints" FontSize="14" Width="50" Margin="10,0" Padding="1"
-                                         HorizontalContentAlignment="Center" />
+                                         HorizontalContentAlignment="Center" IsEnabled="{Binding CanEnterPoints}" />
                                 <TextBlock Text="points for a draw." FontSize="14" VerticalAlignment="Center"  />
                             </StackPanel>
 

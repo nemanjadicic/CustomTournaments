@@ -21,6 +21,8 @@ namespace CustomTournamentsLibrary.DataAccess
             }
         }
 
+
+
         public static List<PlayerModel> GetAllPlayers()
         {
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
@@ -29,6 +31,8 @@ namespace CustomTournamentsLibrary.DataAccess
             }
         }
 
+
+
         public static List<TeamModel> GetAllTeams()
         {
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
@@ -36,6 +40,8 @@ namespace CustomTournamentsLibrary.DataAccess
                 return connection.Query<TeamModel>("dbo.SP_GetAllTeams").ToList();
             }
         }
+
+
 
         public static List<RoundModel> GetRoundsByTournament(int tournamentId)
         {
@@ -86,6 +92,8 @@ namespace CustomTournamentsLibrary.DataAccess
             return rounds;
         }
 
+
+
         public static List<GameModel> GetGamesByRound(RoundModel round)
         {
             List<GameModel> games = new List<GameModel>();
@@ -112,6 +120,8 @@ namespace CustomTournamentsLibrary.DataAccess
             return games;
         }
 
+
+
         public static List<LeagueParticipantModel> GetLeagueParticipantsForDisplay(int tournamentId)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -124,6 +134,8 @@ namespace CustomTournamentsLibrary.DataAccess
             }
         }
 
+
+
         private static List<LeagueParticipantModel> GetTournamentParticipantsByTournament(int tournamentId)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -135,6 +147,8 @@ namespace CustomTournamentsLibrary.DataAccess
                     ("dbo.SP_GetLeagueParticipantsByTournament", parameters, commandType: CommandType.StoredProcedure).ToList();
             }
         }
+
+
 
         public static List<TeamModel> GetRoundWinners(int roundId)
         {
@@ -165,6 +179,8 @@ namespace CustomTournamentsLibrary.DataAccess
             return roundWinners;
         }
 
+
+
         public static void CreatePlayer(PlayerModel player)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -181,6 +197,8 @@ namespace CustomTournamentsLibrary.DataAccess
             player.Id = parameters.Get<int>("@Id");
         }
 
+
+
         public static void CreateTeam(TeamModel team)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -196,6 +214,8 @@ namespace CustomTournamentsLibrary.DataAccess
             team.Id = parameters.Get<int>("@Id");
         }
 
+
+
         public static void CreateTeamMembers(TeamModel team, PlayerModel player)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -210,6 +230,8 @@ namespace CustomTournamentsLibrary.DataAccess
             }
         }
 
+
+
         public static void CreateTournament(TournamentModel tournament)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -217,6 +239,10 @@ namespace CustomTournamentsLibrary.DataAccess
             parameters.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@TournamentName", tournament.TournamentName);
             parameters.Add("@IsLeague", tournament.IsLeague);
+            parameters.Add("@HomeAndAway", tournament.HomeAndAway);
+            parameters.Add("@VictoryPoints", tournament.VictoryPoints);
+            parameters.Add("@DrawPoints", tournament.DrawPoints);
+            parameters.Add("@OfficialScore", tournament.OfficialScore);
             parameters.Add("@EntryFee", tournament.EntryFee);
 
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
@@ -226,6 +252,8 @@ namespace CustomTournamentsLibrary.DataAccess
 
             tournament.Id = parameters.Get<int>("@Id");
         }
+
+
 
         public static void CreateLeagueParticipant(TournamentModel tournament, TeamModel team)
         {
@@ -240,6 +268,8 @@ namespace CustomTournamentsLibrary.DataAccess
                 connection.Execute("dbo.SP_InsertNewLeagueParticipant", parameters, commandType: CommandType.StoredProcedure);
             }
         }
+
+
 
         public static void CreatePrize(TournamentModel tournament, PrizeModel prize)
         {
@@ -257,6 +287,8 @@ namespace CustomTournamentsLibrary.DataAccess
             }
         }
 
+
+
         internal static void CreateRound(TournamentModel tournament, RoundModel round)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -272,6 +304,8 @@ namespace CustomTournamentsLibrary.DataAccess
 
             round.Id = parameters.Get<int>("@Id");
         }
+
+
 
         internal static void CreateGame(GameModel game)
         {
@@ -290,6 +324,8 @@ namespace CustomTournamentsLibrary.DataAccess
             game.Id = parameters.Get<int>("@Id");
         }
 
+
+
         internal static void CreateGameParticipant(GameParticipantModel participant)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -307,6 +343,8 @@ namespace CustomTournamentsLibrary.DataAccess
 
             participant.Id = parameters.Get<int>("@Id");
         }
+
+
 
         public static void UpdateGameScoreAndStatus(GameModel game)
         {
@@ -333,6 +371,8 @@ namespace CustomTournamentsLibrary.DataAccess
             }
         }
 
+
+
         public static void UpdateGameParticipantAsCupRoundWinner(GameModel selectedGame)
         {
             GameParticipantModel homeTeam = selectedGame.Competitors[0];
@@ -353,6 +393,8 @@ namespace CustomTournamentsLibrary.DataAccess
                 connection.Execute("dbo.SP_UpdateGameParticipantCupRoundWinner", parameters, commandType: CommandType.StoredProcedure);
             }
         }
+
+
 
         public static void UpdateLeagueParticipants(GameModel game)
         {
@@ -411,6 +453,8 @@ namespace CustomTournamentsLibrary.DataAccess
             UpdateThisLeagueParticipant(winner);
             UpdateThisLeagueParticipant(loser);
         }
+
+
 
         private static void UpdateThisLeagueParticipant(LeagueParticipantModel team)
         {

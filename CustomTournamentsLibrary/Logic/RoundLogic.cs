@@ -35,21 +35,32 @@ namespace CustomTournamentsLibrary.Logic
                     //  Create round
                     RoundModel round = new RoundModel(tournament.Id, roundNumber);
                     SqlDataHandler.CreateRound(tournament, round);
+                    tournament.Rounds.Add(round);
 
                     int teamIndexer = roundNumber % shortenedCount;
 
                     //  Create 1st game in the round
                     GameModel game = new GameModel(tournament.Id, round.Id, true);
                     SqlDataHandler.CreateGame(game);
+                    round.Games.Add(game);
 
-                    //  Create 1st game competitors
-                    game.Competitors.Add(new GameParticipantModel { TournamentId = tournament.Id, RoundId = round.Id, GameId = game.Id, TeamName = shortenedTeamList[teamIndexer].TeamName });
-                    game.Competitors.Add(new GameParticipantModel { TournamentId = tournament.Id, RoundId = round.Id, GameId = game.Id, TeamName = participants[0].TeamName });
+                    //  Create 1st game participants
+                    GameParticipantModel homeTeam = new GameParticipantModel
+                    { TournamentId = tournament.Id, RoundId = round.Id, GameId = game.Id, TeamName = shortenedTeamList[teamIndexer].TeamName };
+                    GameParticipantModel awayTeam = new GameParticipantModel
+                    { TournamentId = tournament.Id, RoundId = round.Id, GameId = game.Id, TeamName = participants[0].TeamName };
+
+                    game.Competitors.Add(homeTeam);
+                    game.Competitors.Add(awayTeam);
+
+
 
                     foreach  (GameParticipantModel participant in game.Competitors)
                     {
                         SqlDataHandler.CreateGameParticipant(participant);
                     }
+
+
 
 
 
@@ -62,14 +73,63 @@ namespace CustomTournamentsLibrary.Logic
                         //  Create the next game
                         GameModel nextGame = new GameModel(tournament.Id, round.Id, true);
                         SqlDataHandler.CreateGame(nextGame);
+                        round.Games.Add(nextGame);
 
-                        //  Create next game's competitors
-                        nextGame.Competitors.Add(new GameParticipantModel { TournamentId = tournament.Id, RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[homeIndex].TeamName });
-                        nextGame.Competitors.Add(new GameParticipantModel { TournamentId = tournament.Id, RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[awayIndex].TeamName });
+                        //  Create next game participants
+                        GameParticipantModel nextHomeTeam = new GameParticipantModel
+                        { TournamentId = tournament.Id, RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[homeIndex].TeamName };
+                        GameParticipantModel nextAwayTeam = new GameParticipantModel
+                        { TournamentId = tournament.Id, RoundId = round.Id, GameId = nextGame.Id, TeamName = shortenedTeamList[awayIndex].TeamName };
+
+                        nextGame.Competitors.Add(nextHomeTeam);
+                        nextGame.Competitors.Add(nextAwayTeam);
+
+
 
                         foreach (GameParticipantModel participant in nextGame.Competitors)
                         {
-                            SqlDataHandler.CreateGameParticipant(participant); 
+                            SqlDataHandler.CreateGameParticipant(participant);
+                        }
+                    }
+                }
+
+
+
+                if (tournament.HomeAndAway)
+                {
+                    int numberToAdd = 1;
+                    
+                    //  Create the duplicate rounds and duplicate of every game in the round with teams on opposite places
+                    foreach (RoundModel createdRound in tournament.Rounds)
+                    {
+                        //  Create the 1st next duplicate round
+                        RoundModel nextRound = new RoundModel(tournament.Id, tournament.Rounds.Count + numberToAdd);
+                        SqlDataHandler.CreateRound(tournament, nextRound);
+                        numberToAdd += 1;
+
+                        foreach (GameModel createdGame in createdRound.Games)
+                        {
+                            //  Create duplicate game
+                            GameModel nextGame = new GameModel(tournament.Id, nextRound.Id, true);
+                            SqlDataHandler.CreateGame(nextGame);
+
+
+
+                            //  Create game participants
+                            GameParticipantModel homeTeam = new GameParticipantModel
+                            { TournamentId = tournament.Id, RoundId = nextRound.Id, GameId = nextGame.Id, TeamName = createdGame.Competitors[1].TeamName };
+                            GameParticipantModel awayTeam = new GameParticipantModel
+                            { TournamentId = tournament.Id, RoundId = nextRound.Id, GameId = nextGame.Id, TeamName = createdGame.Competitors[0].TeamName };
+
+                            nextGame.Competitors.Add(homeTeam);
+                            nextGame.Competitors.Add(awayTeam);
+
+
+
+                            foreach (GameParticipantModel participant in nextGame.Competitors)
+                            {
+                                SqlDataHandler.CreateGameParticipant(participant);
+                            }
                         }
                     }
                 }
@@ -244,6 +304,9 @@ namespace CustomTournamentsLibrary.Logic
                         break;
                     case 64:
                         roundsCount = 6;
+                        break;
+                    case 128:
+                        roundsCount = 7;
                         break;
                 }
             }

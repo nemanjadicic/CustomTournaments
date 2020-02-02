@@ -11,14 +11,14 @@ namespace CustomTournamentsLibrary.Models
         public int Id { get; set; }
         public int TournamentId { get; set; }
         public int RoundNumber { get; set; }
-        public List<GameModel> Games { get; set; }
+        public List<GameModel> Games { get; set; } = new List<GameModel>();
 
 
 
-        public RoundModel(int tourneyId, int number)
+        public RoundModel(int tourneyId, int roundnumber)
         {
             TournamentId = tourneyId;
-            RoundNumber = number;
+            RoundNumber = roundnumber;
         }
 
         public RoundModel()

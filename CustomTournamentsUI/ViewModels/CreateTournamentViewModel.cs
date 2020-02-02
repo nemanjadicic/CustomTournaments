@@ -271,34 +271,34 @@ namespace CustomTournamentsUI.ViewModels
         }
         public void CreateTournament()
         {
-            TournamentModel tournament = new TournamentModel(TournamentName, IsLeague, EntryFee);
-            SqlDataHandler.CreateTournament(tournament);
+            //TournamentModel tournament = new TournamentModel(TournamentName, IsLeague, EntryFee);
+            //SqlDataHandler.CreateTournament(tournament);
 
-            foreach (TeamModel team in TournamentTeams)
-            {
-                tournament.ParticipatingTeams.Add(team);
-            }
+            //foreach (TeamModel team in TournamentTeams)
+            //{
+            //    tournament.ParticipatingTeams.Add(team);
+            //}
 
-            RoundLogic.CreateDummyTeams(tournament);
+            //RoundLogic.CreateDummyTeams(tournament);
 
-            if (tournament.IsLeague)
-            {
-                foreach (TeamModel team in tournament.ParticipatingTeams)
-                {
-                    SqlDataHandler.CreateLeagueParticipant(tournament, team);
-                }
-            }
+            //if (tournament.IsLeague)
+            //{
+            //    foreach (TeamModel team in tournament.ParticipatingTeams)
+            //    {
+            //        SqlDataHandler.CreateLeagueParticipant(tournament, team);
+            //    }
+            //}
 
-            foreach (PrizeModel prize in TournamentPrizes)
-            {
-                tournament.TournamentPrizes.Add(prize);
-                SqlDataHandler.CreatePrize(tournament, prize);
-            }
+            //foreach (PrizeModel prize in TournamentPrizes)
+            //{
+            //    tournament.TournamentPrizes.Add(prize);
+            //    SqlDataHandler.CreatePrize(tournament, prize);
+            //}
 
-            RoundLogic.CreateRounds(tournament);
+            //RoundLogic.CreateRounds(tournament);
 
-            var conductor = Parent as IConductor;
-            conductor.ActivateItem(new HomeViewModel());
+            //var conductor = Parent as IConductor;
+            //conductor.ActivateItem(new HomeViewModel());
         }
 
 

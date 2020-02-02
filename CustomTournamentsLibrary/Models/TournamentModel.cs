@@ -19,14 +19,19 @@ namespace CustomTournamentsLibrary.Models
         public List<TeamModel> ParticipatingTeams { get; set; } = new List<TeamModel>();
         public List<PrizeModel> TournamentPrizes { get; set; } = new List<PrizeModel>();
         public List<RoundModel> Rounds { get; set; } = new List<RoundModel>();
+        public bool Finished { get; set; }
 
 
 
-        public TournamentModel(string name, bool leagueOrNot, decimal entryfee)
+        public TournamentModel(string name, bool leagueOrNot, bool homeAway, int victory, int draw, int offScore, decimal fee)
         {
             TournamentName = name;
             IsLeague = leagueOrNot;
-            EntryFee = entryfee;
+            HomeAndAway = homeAway;
+            VictoryPoints = victory;
+            DrawPoints = draw;
+            OfficialScore = offScore;
+            EntryFee = fee;
         }
 
         public TournamentModel()

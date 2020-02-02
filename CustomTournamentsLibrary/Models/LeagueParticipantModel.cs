@@ -18,8 +18,5 @@ namespace CustomTournamentsLibrary.Models
         public int Conceded { get; set; } // nullable
         public int ScoreDifferential { get; set; } // nullable
         public int Points { get; set; } // nullable
-
-
-        //  TODO - Change LeagueParticipants table field from Conceeded to Conceded
     }
 }

@@ -17,8 +17,10 @@ namespace CustomTournamentsUI.ViewModels
         private bool _isCup;
         private bool _canClickRadioButton;
         private bool _homeAndAway;
+        private bool _canClickHomeAway;
         private int _victoryPoints;
         private int _drawPoints;
+        private bool _canEnterPoints;
         private int _officialScore;
         private decimal _entryFee;
         private BindableCollection<PrizeModel> _tournamentPrizes;
@@ -35,7 +37,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
-
+        
 
         //          TOURNAMENT NAME AND FEATURES
         public string TournamentName
@@ -57,6 +59,17 @@ namespace CustomTournamentsUI.ViewModels
                 _isLeague = value;
                 NotifyOfPropertyChange(() => IsLeague);
 
+                if (IsLeague)
+                {
+                    CanClickHomeAway = true;
+                    CanEnterPoints = true;
+                }
+                else
+                {
+                    CanClickHomeAway = false;
+                    CanEnterPoints = false;
+                }
+
                 ValidateData();
             }
         }
@@ -67,6 +80,19 @@ namespace CustomTournamentsUI.ViewModels
             {
                 _isCup = value;
                 NotifyOfPropertyChange(() => IsCup);
+
+                if (IsCup)
+                {
+                    HomeAndAway = false;
+                    CanClickHomeAway = false;
+
+                    CanEnterPoints = false;
+                }
+                else
+                {
+                    CanClickHomeAway = true;
+                    CanEnterPoints = true;
+                }
 
                 ValidateData();
             }
@@ -89,6 +115,15 @@ namespace CustomTournamentsUI.ViewModels
                 NotifyOfPropertyChange(() => HomeAndAway);
             }
         }
+        public bool CanClickHomeAway
+        {
+            get { return _canClickHomeAway; }
+            set 
+            { 
+                _canClickHomeAway = value;
+                NotifyOfPropertyChange(() => CanClickHomeAway);
+            }
+        }
         public int VictoryPoints
         {
             get { return _victoryPoints; }
@@ -109,6 +144,15 @@ namespace CustomTournamentsUI.ViewModels
                 NotifyOfPropertyChange(() => DrawPoints);
 
                 ValidateData();
+            }
+        }
+        public bool CanEnterPoints
+        {
+            get { return _canEnterPoints; }
+            set 
+            { 
+                _canEnterPoints = value;
+                NotifyOfPropertyChange(() => CanEnterPoints);
             }
         }
         public int OfficialScore
@@ -295,17 +339,17 @@ namespace CustomTournamentsUI.ViewModels
                 errorList.Add("Please select a tournament type.");
             }
 
-            if (VictoryPoints <= 1)
+            if (IsLeague == true && VictoryPoints <= 1)
             {
                 errorList.Add("A team must be awarded at least 2 points for a win.");
             }
 
-            if (DrawPoints < 1)
+            if (IsLeague == true && DrawPoints < 1)
             {
                 errorList.Add("Teams must be awarded at least 1 point for a draw.");
             }
 
-            if (DrawPoints >= VictoryPoints)
+            if (IsLeague == true && DrawPoints >= VictoryPoints)
             {
                 errorList.Add("Teams must be awarded less points for a draw than a win.");
             }
@@ -316,7 +360,7 @@ namespace CustomTournamentsUI.ViewModels
             }
 
             bool somethingWrong = (String.IsNullOrWhiteSpace(TournamentName)) || (TournamentTeams.Count <= 1) || (IsLeague == false && IsCup == false) 
-                || (VictoryPoints <= 1) || (DrawPoints < 1 || DrawPoints >= VictoryPoints) || (OfficialScore <= 0);
+                || (IsLeague == true && VictoryPoints <= 1) || (IsLeague == true && DrawPoints < 1 || IsLeague == true && DrawPoints >= VictoryPoints) || (OfficialScore <= 0);
 
             if (somethingWrong)
             {
@@ -331,7 +375,8 @@ namespace CustomTournamentsUI.ViewModels
         }
         public void CreateTournament()
         {
-            TournamentModel tournament = new TournamentModel(TournamentName, IsLeague, EntryFee);
+            TournamentModel tournament = new TournamentModel
+                (TournamentName, IsLeague, HomeAndAway, VictoryPoints, DrawPoints, OfficialScore, EntryFee);
             SqlDataHandler.CreateTournament(tournament);
 
             foreach (TeamModel team in TournamentTeams)
@@ -359,6 +404,7 @@ namespace CustomTournamentsUI.ViewModels
 
             var conductor = Parent as IConductor;
             conductor.ActivateItem(new HomeViewModel());
+            //  TODO - activate tournamentView instead of homeView
         }
 
 
