@@ -75,7 +75,6 @@
     <Compile Include="ViewModels\CreateNewTournamentViewModel.cs" />
     <Compile Include="ViewModels\CreatePrizeViewModel.cs" />
     <Compile Include="ViewModels\CreateTeamViewModel.cs" />
-    <Compile Include="ViewModels\CreateTournamentViewModel.cs" />
     <Compile Include="ViewModels\CupViewModel.cs" />
     <Compile Include="ViewModels\EnterResultViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -89,9 +88,6 @@
     </Compile>
     <Compile Include="Views\CreateTeamView.xaml.cs">
       <DependentUpon>CreateTeamView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CreateTournamentView.xaml.cs">
-      <DependentUpon>CreateTournamentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CupView.xaml.cs">
       <DependentUpon>CupView.xaml</DependentUpon>
@@ -153,10 +149,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CreateTeamView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CreateTournamentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

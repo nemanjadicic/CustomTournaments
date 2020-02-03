@@ -1,13 +1,9 @@
-﻿using Caliburn.Micro;
-using CustomTournamentsLibrary.Models;
+﻿using CustomTournamentsLibrary.Models;
 using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomTournamentsLibrary.DataAccess
 {
@@ -396,7 +392,7 @@ namespace CustomTournamentsLibrary.DataAccess
 
 
 
-        public static void UpdateLeagueParticipants(GameModel game)
+        public static void UpdateLeagueParticipants(TournamentModel tournament, GameModel game)
         {
             GameParticipantModel homeTeam = game.Competitors[0];
             GameParticipantModel awayTeam = game.Competitors[1];
@@ -412,7 +408,7 @@ namespace CustomTournamentsLibrary.DataAccess
                 winner.Victories += 1;
                 winner.Scored += homeTeam.Score;
                 winner.Conceded += awayTeam.Score;
-                winner.Points += 3;
+                winner.Points += tournament.VictoryPoints;
 
                 loser.Defeats += 1;
                 loser.Scored += awayTeam.Score;
@@ -427,12 +423,12 @@ namespace CustomTournamentsLibrary.DataAccess
                 winner.Draws += 1;
                 winner.Scored += awayTeam.Score;
                 winner.Conceded += homeTeam.Score;
-                winner.Points += 1;
+                winner.Points += tournament.DrawPoints;
 
                 loser.Draws += 1;
                 loser.Scored += homeTeam.Score;
                 loser.Conceded += awayTeam.Score;
-                loser.Points += 1;
+                loser.Points += tournament.DrawPoints;
             }
 
             else
@@ -443,7 +439,7 @@ namespace CustomTournamentsLibrary.DataAccess
                 winner.Victories += 1;
                 winner.Scored += awayTeam.Score;
                 winner.Conceded += homeTeam.Score;
-                winner.Points += 3;
+                winner.Points += tournament.VictoryPoints;
 
                 loser.Defeats += 1;
                 loser.Scored += homeTeam.Score;

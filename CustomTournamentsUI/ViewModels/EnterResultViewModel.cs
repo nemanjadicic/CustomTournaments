@@ -120,7 +120,7 @@ namespace CustomTournamentsUI.ViewModels
 
             if (tournamentView.CurrentTournament.IsLeague)
             {
-                SqlDataHandler.UpdateLeagueParticipants(tournamentView.SelectedGame); 
+                SqlDataHandler.UpdateLeagueParticipants(tournamentView.CurrentTournament, tournamentView.SelectedGame); 
             }
             else
             {
@@ -170,6 +170,7 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
+        //          CONSTRUCTOR
         public EnterResultViewModel(IEnterResult previousView)
         {
             tournamentView = previousView;

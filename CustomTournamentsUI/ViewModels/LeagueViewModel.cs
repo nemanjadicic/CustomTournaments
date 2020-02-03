@@ -139,6 +139,52 @@ namespace CustomTournamentsUI.ViewModels
             IWindowManager manager = new WindowManager();
             manager.ShowWindow(new EnterResultViewModel(this));
         }
+        private void EnterAutomaticResults()
+        {
+            foreach (RoundModel round in _roundList)
+            {
+                foreach (GameModel game in round.Games)
+                {
+                    GameParticipantModel homeTeam = game.Competitors[0];
+                    GameParticipantModel awayTeam = game.Competitors[1];
+
+                    if (homeTeam.TeamName.Contains("Dummy"))
+                    {
+                        homeTeam.Score = 0;
+                        awayTeam.Score = CurrentTournament.OfficialScore;
+
+                        game.Unplayed = false;
+                        UpdateGameAndGameParticipants(game);
+                    }
+                    else if (awayTeam.TeamName.Contains("Dummy"))
+                    {
+                        awayTeam.Score = 0;
+                        homeTeam.Score = CurrentTournament.OfficialScore;
+
+                        game.Unplayed = false;
+                        UpdateGameAndGameParticipants(game);
+                    }
+
+                    if (SelectedGame == game)
+                    {
+                        CanEnterResult = false;
+                    }
+                }
+            }
+        }
+        private void UpdateGameAndGameParticipants(GameModel game)
+        {
+            SqlDataHandler.UpdateGameScoreAndStatus(game);
+
+            if (CurrentTournament.IsLeague)
+            {
+                SqlDataHandler.UpdateLeagueParticipants(CurrentTournament, game);
+            }
+            else
+            {
+                SqlDataHandler.UpdateGameParticipantAsCupRoundWinner(game);
+            }
+        }
 
 
 
@@ -175,12 +221,18 @@ namespace CustomTournamentsUI.ViewModels
 
 
 
+
+
+        //          CONSTRUCTOR
         public LeagueViewModel(TournamentModel selectedTournament)
         {
             CurrentTournament = selectedTournament;
 
             _tournamentName = CurrentTournament.TournamentName;
             _roundList = new BindableCollection<RoundModel>(SqlDataHandler.GetRoundsByTournament(CurrentTournament.Id));
+
+            EnterAutomaticResults();
+            
             _selectedRound = _roundList[0];
             _gameList = new BindableCollection<GameModel>(SelectedRound.Games);
             _leagueParticipants = new BindableCollection<LeagueParticipantModel>(SqlDataHandler.GetLeagueParticipantsForDisplay(CurrentTournament.Id));

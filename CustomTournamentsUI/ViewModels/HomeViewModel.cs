@@ -80,7 +80,7 @@ namespace CustomTournamentsUI.ViewModels
         public void CreateNewTournament()
         {
             var conductor = Parent as IConductor;
-            conductor.ActivateItem(new CreateTournamentViewModel());
+            conductor.ActivateItem(new CreateNewTournamentViewModel());
         }
         public HomeViewModel()
         {
