@@ -80,6 +80,7 @@
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LeagueViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\TournamentSummaryViewModel.cs" />
     <Compile Include="Views\CreateNewTournamentView.xaml.cs">
       <DependentUpon>CreateNewTournamentView.xaml</DependentUpon>
     </Compile>
@@ -103,6 +104,9 @@
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TournamentSummaryView.xaml.cs">
+      <DependentUpon>TournamentSummaryView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -172,9 +176,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\TournamentSummaryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\newLogo.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\trophy.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

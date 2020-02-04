@@ -68,13 +68,20 @@ namespace CustomTournamentsUI.ViewModels
         {
             var conductor = Parent as IConductor;
 
-            if (SelectedTournament.IsLeague)
+            if (SelectedTournament.Finished)
             {
-                conductor.ActivateItem(new LeagueViewModel(SelectedTournament));
+                conductor.ActivateItem(new TournamentSummaryViewModel());
             }
             else
             {
-                conductor.ActivateItem(new CupViewModel(SelectedTournament));
+                if (SelectedTournament.IsLeague)
+                {
+                    conductor.ActivateItem(new LeagueViewModel(SelectedTournament));
+                }
+                else
+                {
+                    conductor.ActivateItem(new CupViewModel(SelectedTournament));
+                }
             }
         }
         public void CreateNewTournament()

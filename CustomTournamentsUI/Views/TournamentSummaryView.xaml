@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="CustomTournamentsUI.Views.TournamentSummaryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CustomTournamentsUI.Views"
+             mc:Ignorable="d" Background="AliceBlue" FontSize="18"
+             d:DesignHeight="550" d:DesignWidth="800">
+
+    <Grid Margin="10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*" />
+            <RowDefinition Height="1.5*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{Binding TournamentName}" FontSize="30" TextAlignment="Left" Grid.Column="0"
+                   FontWeight="SemiBold" FontStyle="Oblique" Foreground="Blue"/>
+            <TextBlock Text="Tournament Summary" FontSize="30" TextAlignment="Left" FontWeight="SemiBold" 
+                   FontStyle="Oblique" Grid.Column="1" Margin="20,0,10,0" />
+        </Grid>
+
+        
+        <!-- 2ND ROW -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            
+            
+            <!-- WINNER TROPHY -->
+            <Image Grid.Column="0" Source="/Resources/trophy.bmp"/>
+            <TextBlock Grid.Column="0" HorizontalAlignment="Center" Margin="0,50" TextWrapping="Wrap" 
+                     Text="{Binding ChampionName}" VerticalAlignment="Top" MaxWidth="150" Background="Transparent" />
+            <TextBlock Grid.Column="0" Margin="0,265,0,25" MaxWidth="165" Text="{Binding Title}" Background="Transparent"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold" />
+            
+            
+            
+            <!-- SUMMARY -->
+            <Grid Grid.Column="1" Margin="30,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="1.5*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="0.5*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Champions -->
+                <TextBlock Text="Champions:" FontSize="14" Grid.Column="0" Grid.Row="0" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding ChampionNameAndPrize}" Grid.Column="1" Grid.Row="0" FontSize="14" TextWrapping="Wrap" />
+
+                <!-- Runner Up -->
+                <TextBlock Text="Second Placed:" FontSize="14" Grid.Column="0" Grid.Row="1" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding RunnerUpAndPrize}" Grid.Column="1" Grid.Row="1" FontSize="14" TextWrapping="Wrap" />
+
+                <!-- Third Placed -->
+                <TextBlock Text="Third Placed:" FontSize="14" Grid.Column="0" Grid.Row="2" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding ThirdPlacedAndPrize}" FontSize="14" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" />
+
+                <!-- Highest Scoring Game -->
+                <TextBlock Text="Highest Scoring Game:" FontSize="14" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" 
+                           HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding HighestScoringGame}" FontSize="14" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"
+                           HorizontalAlignment="Center" />
+
+                <!-- Tournament History -->
+                <Button x:Name="OpenTournamentHistory" Content="Tournament History" Grid.Column="0" Grid.Row="5" 
+                        Grid.ColumnSpan="2" FontSize="14" HorizontalAlignment="Center" MinWidth="180" FontWeight="SemiBold" />
+
+            </Grid> 
+
+        </Grid>
+        
+        
+        
+        <!-- 3RD ROW -->
+        <Grid Grid.Row="2" Margin="100,30,100,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.7*" />
+                <RowDefinition Height="3.6*" />
+            </Grid.RowDefinitions>
+            
+            
+            
+            <!-- Tournament Participants -->
+            <TextBlock Text="Tournament Participants" FontWeight="SemiBold" HorizontalAlignment="Center" 
+                       Grid.ColumnSpan="2" />
+
+            <!-- Teams -->
+            <ListBox x:Name="ParticipatingTeams" Margin="0,10,20,0" Grid.Row="1" Grid.Column="0" FontSize="14"
+                         ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedItem="{Binding SelectedTeam}" >
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding TeamName}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+            <!-- Team Members -->
+            <ListBox x:Name="TeamMembers" Margin="20,10,0,0" Grid.Row="1" Grid.Column="1" FontSize="14"
+                         ScrollViewer.VerticalScrollBarVisibility="Visible" >
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding FullName}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+        </Grid>
+        
+    </Grid>
+
+</UserControl>
