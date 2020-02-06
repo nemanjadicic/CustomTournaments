@@ -39,10 +39,14 @@ namespace CustomTournamentsLibrary.Logic
 
                     int teamIndexer = roundNumber % shortenedCount;
 
+
+
                     //  Create 1st game in the round
                     GameModel game = new GameModel(tournament.Id, round.Id, true);
                     SqlDataHandler.CreateGame(game);
                     round.Games.Add(game);
+
+
 
                     //  Create 1st game participants
                     GameParticipantModel homeTeam = new GameParticipantModel
@@ -52,9 +56,7 @@ namespace CustomTournamentsLibrary.Logic
 
                     game.Competitors.Add(homeTeam);
                     game.Competitors.Add(awayTeam);
-
-
-
+                    
                     foreach  (GameParticipantModel participant in game.Competitors)
                     {
                         SqlDataHandler.CreateGameParticipant(participant);
@@ -70,10 +72,14 @@ namespace CustomTournamentsLibrary.Logic
                         int homeIndex = (roundNumber + index) % shortenedCount;
                         int awayIndex = (roundNumber + shortenedCount - index) % shortenedCount;
 
+
+
                         //  Create the next game
                         GameModel nextGame = new GameModel(tournament.Id, round.Id, true);
                         SqlDataHandler.CreateGame(nextGame);
                         round.Games.Add(nextGame);
+
+
 
                         //  Create next game participants
                         GameParticipantModel nextHomeTeam = new GameParticipantModel
@@ -83,9 +89,7 @@ namespace CustomTournamentsLibrary.Logic
 
                         nextGame.Competitors.Add(nextHomeTeam);
                         nextGame.Competitors.Add(nextAwayTeam);
-
-
-
+                        
                         foreach (GameParticipantModel participant in nextGame.Competitors)
                         {
                             SqlDataHandler.CreateGameParticipant(participant);
@@ -107,6 +111,8 @@ namespace CustomTournamentsLibrary.Logic
                         SqlDataHandler.CreateRound(tournament, nextRound);
                         numberToAdd += 1;
 
+
+
                         foreach (GameModel createdGame in createdRound.Games)
                         {
                             //  Create duplicate game
@@ -123,9 +129,7 @@ namespace CustomTournamentsLibrary.Logic
 
                             nextGame.Competitors.Add(homeTeam);
                             nextGame.Competitors.Add(awayTeam);
-
-
-
+                            
                             foreach (GameParticipantModel participant in nextGame.Competitors)
                             {
                                 SqlDataHandler.CreateGameParticipant(participant);
@@ -174,12 +178,15 @@ namespace CustomTournamentsLibrary.Logic
                     }
                 }
 
+
+
                 //  Separate teams in 2 lists
                 while (awayTeams.Count != homeTeams.Count)
                 {
                     awayTeams.Add(homeTeams[0]);
                     homeTeams.Remove(homeTeams[0]);
                 }
+
 
 
                 //  Pair teams from 2 lists into game
@@ -210,6 +217,7 @@ namespace CustomTournamentsLibrary.Logic
                     awayTeams.Add(homeTeams[0]);
                     homeTeams.Remove(homeTeams[0]);
                 }
+
 
 
                 //  Pair teams from 2 lists into game

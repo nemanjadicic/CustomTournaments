@@ -80,20 +80,17 @@ namespace CustomTournamentsLibrary.DataAccess
             }
             else
             {
-                List<GameParticipantModel> allGameParticipants = new List<GameParticipantModel>();
+                List<GameParticipantModel> firstRoundParticipants = new List<GameParticipantModel>();
 
-                foreach (RoundModel round in tournament.Rounds)
+                foreach (GameModel game in tournament.Rounds[0].Games)
                 {
-                    foreach (GameModel game in round.Games)
-                    {
-                        allGameParticipants.Add(game.Competitors[0]);
-                        allGameParticipants.Add(game.Competitors[1]);
-                    }
+                    firstRoundParticipants.Add(game.Competitors[0]);
+                    firstRoundParticipants.Add(game.Competitors[1]);
                 }
 
 
 
-                foreach (GameParticipantModel team in allGameParticipants)
+                foreach (GameParticipantModel team in firstRoundParticipants)
                 {
                     parameters = new DynamicParameters();
 

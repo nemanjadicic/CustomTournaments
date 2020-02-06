@@ -183,7 +183,11 @@ namespace CustomTournamentsUI.ViewModels
             List<string> errors = new List<string>();
             List<TeamModel> existingTeams = SqlDataHandler.GetAllTeams();
             List<string> usedNames = new List<string>();
-            string nameLower = TeamName.ToLower();
+            string nameLower = "";
+            if (TeamName != null)
+            {
+                nameLower = TeamName.ToLower(); 
+            }
 
             foreach (TeamModel team in existingTeams)
             {
