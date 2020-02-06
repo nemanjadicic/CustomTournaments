@@ -416,7 +416,7 @@ namespace CustomTournamentsUI.ViewModels
         {
             _tournamentTeams = new BindableCollection<TeamModel>();
             _tournamentPrizes = new BindableCollection<PrizeModel>();
-            _availableTeams = new BindableCollection<TeamModel>(SqlDataHandler.GetAllTeams());
+            _availableTeams = new BindableCollection<TeamModel>(SqlDataHandler.GetAllData<TeamModel>("dbo.SP_GetAllTeams"));
             TournamentTeams.CollectionChanged += TournamentTeams_CollectionChanged;
             _victoryPoints = 3;
             _drawPoints = 1;

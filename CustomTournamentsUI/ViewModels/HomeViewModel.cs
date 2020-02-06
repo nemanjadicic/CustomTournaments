@@ -91,7 +91,7 @@ namespace CustomTournamentsUI.ViewModels
         }
         public HomeViewModel()
         {
-            _existingTournaments = new BindableCollection<TournamentModel>(SqlDataHandler.GetAllTournaments());
+            _existingTournaments = new BindableCollection<TournamentModel>(SqlDataHandler.GetAllData<TournamentModel>("dbo.SP_GetAllTournaments"));
 
             foreach (TournamentModel tournament in _existingTournaments)
             {

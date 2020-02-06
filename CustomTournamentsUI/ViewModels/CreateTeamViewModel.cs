@@ -181,7 +181,7 @@ namespace CustomTournamentsUI.ViewModels
         public void ValidateAllData()
         {
             List<string> errors = new List<string>();
-            List<TeamModel> existingTeams = SqlDataHandler.GetAllTeams();
+            List<TeamModel> existingTeams = SqlDataHandler.GetAllData<TeamModel>("dbo.SP_GetAllTeams");
             List<string> usedNames = new List<string>();
             string nameLower = "";
             if (TeamName != null)
@@ -261,12 +261,12 @@ namespace CustomTournamentsUI.ViewModels
         public CreateTeamViewModel(ITournamentCreator previousView)
         {
             _tournamentCreationView = previousView;
-            _availablePlayers = new BindableCollection<PlayerModel>(SqlDataHandler.GetAllPlayers());
+            _availablePlayers = new BindableCollection<PlayerModel>(SqlDataHandler.GetAllData<PlayerModel>("dbo.SP_GetAllPlayers"));
             _teamMembers = new BindableCollection<PlayerModel>();
         }
         public CreateTeamViewModel()
         {
-            _availablePlayers = new BindableCollection<PlayerModel>(SqlDataHandler.GetAllPlayers());
+            _availablePlayers = new BindableCollection<PlayerModel>(SqlDataHandler.GetAllData<PlayerModel>("dbo.SP_GetAllPlayers"));
             _teamMembers = new BindableCollection<PlayerModel>();
         }
     }

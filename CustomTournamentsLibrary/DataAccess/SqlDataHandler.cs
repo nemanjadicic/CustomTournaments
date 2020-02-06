@@ -1,6 +1,5 @@
 ﻿using CustomTournamentsLibrary.Models;
 using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,31 +9,11 @@ namespace CustomTournamentsLibrary.DataAccess
 {
     public class SqlDataHandler
     {
-        public static List<TournamentModel> GetAllTournaments()
+        public static List<T> GetAllData<T>(string storedProcedure)
         {
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
             {
-                return connection.Query<TournamentModel>("dbo.SP_GetAllTournaments").ToList();
-            }
-        }
-
-
-
-        public static List<PlayerModel> GetAllPlayers()
-        {
-            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
-            {
-                return connection.Query<PlayerModel>("dbo.SP_GetAllPlayers").ToList();
-            }
-        }
-
-
-
-        public static List<TeamModel> GetAllTeams()
-        {
-            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
-            {
-                return connection.Query<TeamModel>("dbo.SP_GetAllTeams").ToList();
+                return connection.Query<T>(storedProcedure).ToList();
             }
         }
 
