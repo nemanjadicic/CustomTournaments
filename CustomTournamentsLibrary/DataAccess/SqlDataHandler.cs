@@ -1,5 +1,6 @@
 ﻿using CustomTournamentsLibrary.Models;
 using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -38,6 +39,107 @@ namespace CustomTournamentsLibrary.DataAccess
         }
 
 
+
+        public static List<TeamModel> GetTeamsByTournament(TournamentModel tournament)
+        {
+            List<TeamModel> participants = new List<TeamModel>();
+            DynamicParameters parameters = new DynamicParameters();
+
+            if (tournament.IsLeague)
+            {
+                parameters.Add("@TournamentId", tournament.Id);
+
+                List<LeagueParticipantModel> leagueParticipants = new List<LeagueParticipantModel>();
+
+                using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+                {
+                    leagueParticipants = connection.Query<LeagueParticipantModel>
+                        ("dbo.SP_GetLeagueParticipantsByTournament", parameters, commandType: CommandType.StoredProcedure).ToList();
+                }
+
+
+
+                foreach (LeagueParticipantModel team in leagueParticipants)
+                {
+                    parameters = new DynamicParameters();
+
+                    parameters.Add("@TeamName", team.TeamName);
+
+                    if (!team.TeamName.Contains("Dummy"))
+                    {
+                        using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+                        {
+                            participants.Add(connection.QuerySingle<TeamModel>("dbo.SP_GetTeamByName", parameters, commandType: CommandType.StoredProcedure));
+                        } 
+                    }
+                    else
+                    {
+                        participants.Add(new TeamModel { TeamName = team.TeamName });
+                    }
+                }
+            }
+            else
+            {
+                List<GameParticipantModel> allGameParticipants = new List<GameParticipantModel>();
+
+                foreach (RoundModel round in tournament.Rounds)
+                {
+                    foreach (GameModel game in round.Games)
+                    {
+                        allGameParticipants.Add(game.Competitors[0]);
+                        allGameParticipants.Add(game.Competitors[1]);
+                    }
+                }
+
+
+
+                foreach (GameParticipantModel team in allGameParticipants)
+                {
+                    parameters = new DynamicParameters();
+
+                    parameters.Add("@TeamName", team.TeamName);
+
+                    if (!team.TeamName.Contains("Dummy"))
+                    {
+                        using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+                        {
+                            participants.Add(connection.QuerySingle<TeamModel>("dbo.SP_GetTeamByName", parameters, commandType: CommandType.StoredProcedure));
+                        }
+                    }
+                    else
+                    {
+                        participants.Add(new TeamModel { TeamName = team.TeamName });
+                    }
+                }
+            }
+
+            participants = GetPlayersByTeam(participants);
+
+            return participants;
+        }
+
+
+
+        private static List<TeamModel> GetPlayersByTeam(List<TeamModel> teams)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            
+            foreach (TeamModel team in teams)
+            {
+                parameters = new DynamicParameters();
+
+                parameters.Add("@TeamId", team.Id);
+
+                using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+                {
+                    team.TeamMembers.AddRange(connection.Query<PlayerModel>("dbo.SP_GetPlayersByTeam", parameters, commandType: CommandType.StoredProcedure).ToList());
+                }
+            }
+
+            return teams;
+        }
+
+        
 
         public static List<RoundModel> GetRoundsByTournament(int tournamentId)
         {
@@ -116,7 +218,7 @@ namespace CustomTournamentsLibrary.DataAccess
             return games;
         }
 
-
+        
 
         public static List<LeagueParticipantModel> GetLeagueParticipantsForDisplay(int tournamentId)
         {
@@ -173,6 +275,20 @@ namespace CustomTournamentsLibrary.DataAccess
             }
 
             return roundWinners;
+        }
+
+
+
+        public static List<PrizeModel> GetPrizesByTournament(int tournamentId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@TournamentId", tournamentId);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                return connection.Query<PrizeModel>("dbo.SP_GetPrizesByTournament", parameters, commandType: CommandType.StoredProcedure).ToList(); ;
+            }
         }
 
 
@@ -468,6 +584,19 @@ namespace CustomTournamentsLibrary.DataAccess
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
             {
                 connection.Execute("dbo.SP_UpdateLeagueParticipant", parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+
+
+        public static void UpdateTournamentStatus(TournamentModel tournament)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@TournamentId", tournament.Id);
+
+            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
+            {
+                connection.Execute("dbo.SP_UpdateTournamentStatus", parameters, commandType: CommandType.StoredProcedure);
             }
         }
     }

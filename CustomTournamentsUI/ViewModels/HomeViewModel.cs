@@ -70,7 +70,7 @@ namespace CustomTournamentsUI.ViewModels
 
             if (SelectedTournament.Finished)
             {
-                conductor.ActivateItem(new TournamentSummaryViewModel());
+                conductor.ActivateItem(new TournamentSummaryViewModel(SelectedTournament));
             }
             else
             {

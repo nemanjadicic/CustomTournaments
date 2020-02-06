@@ -95,6 +95,9 @@
     <Build Include="dbo\StoredProcedures\SP_UpdateGameParticipantCupRoundWinner.sql" />
     <Build Include="dbo\StoredProcedures\SP_GetWinnerNamesByRound.sql" />
     <Build Include="dbo\StoredProcedures\SP_GetTeamByName.sql" />
+    <Build Include="dbo\StoredProcedures\SP_GetPrizesByTournament.sql" />
+    <Build Include="dbo\StoredProcedures\SP_GetPlayersByTeam.sql" />
+    <Build Include="dbo\StoredProcedures\SP_UpdateTournamentStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishedProfiles\CustomTournamentsDB.publish.xml" />

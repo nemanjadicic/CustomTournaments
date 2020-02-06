@@ -243,7 +243,7 @@ namespace CustomTournamentsUI.ViewModels
             }
             else
             {
-                TeamName = null;
+                TeamName = "";
                 TeamMembers.Clear();
                 ErrorMessage = null;
             }

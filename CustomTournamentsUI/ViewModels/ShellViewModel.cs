@@ -31,10 +31,7 @@ namespace CustomTournamentsUI.ViewModels
 
         public void LoadCreateTournamentView()
         {
-            //CurrentView = new CreateNewTournamentViewModel();
-            //ActivateItem(CurrentView);
-
-            CurrentView = new TournamentSummaryViewModel();
+            CurrentView = new CreateNewTournamentViewModel();
             ActivateItem(CurrentView);
         }
 

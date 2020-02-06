@@ -5,9 +5,6 @@ using CustomTournamentsLibrary.Logic;
 using CustomTournamentsLibrary.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomTournamentsUI.ViewModels
 {
@@ -141,6 +138,12 @@ namespace CustomTournamentsUI.ViewModels
                 }
             }
 
+            if (TournamentComplete())
+            {
+                tournamentView.CurrentTournament.Finished = true;
+                SqlDataHandler.UpdateTournamentStatus(tournamentView.CurrentTournament);
+            }
+
             tournamentView.CanEnterResult = false;
             tournamentView.GameList.Refresh();
 
@@ -163,6 +166,46 @@ namespace CustomTournamentsUI.ViewModels
             else
             {
                 return true;
+            }
+        }
+        private bool TournamentComplete()
+        {
+            if (tournamentView.CurrentTournament.IsLeague)
+            {
+                List<GameModel> allTournamentGames = new List<GameModel>();
+                List<bool> gameStatuses = new List<bool>();
+
+                foreach (RoundModel round in tournamentView.RoundList)
+                {
+                    allTournamentGames.AddRange(round.Games);
+                }
+
+                foreach (GameModel game in allTournamentGames)
+                {
+                    gameStatuses.Add(game.Unplayed);
+                }
+
+                if (gameStatuses.Contains(true))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                int lastRoundIndex = tournamentView.RoundList.Count - 1;
+                
+                if (tournamentView.RoundList[lastRoundIndex].Games.Count < 1 || tournamentView.RoundList[lastRoundIndex].Games[0].Unplayed)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
         }
 

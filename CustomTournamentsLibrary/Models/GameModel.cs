@@ -13,6 +13,13 @@ namespace CustomTournamentsLibrary.Models
         public int RoundId { get; set; }
         public List<GameParticipantModel> Competitors { get; set; } = new List<GameParticipantModel>();
         public bool Unplayed { get; set; } = true;
+        public int ScoreCount 
+        {
+            get
+            {
+                return Competitors[0].Score + Competitors[1].Score;
+            }
+        }
         public string GameDisplay
         {
             get
