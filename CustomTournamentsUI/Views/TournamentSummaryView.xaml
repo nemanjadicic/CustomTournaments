@@ -22,10 +22,10 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding TournamentName}" FontSize="28" TextAlignment="Left" Grid.Column="0"
-                   FontWeight="SemiBold" FontStyle="Oblique" Foreground="Blue"/>
+            <TextBlock Text="{Binding TournamentName}" FontSize="28" TextAlignment="Left" Grid.Column="0" 
+                   FontWeight="SemiBold" FontStyle="Oblique" Foreground="Blue" FontFamily="Unispace"/>
             <TextBlock Text="Tournament Summary" FontSize="28" TextAlignment="Left" FontWeight="SemiBold" 
-                   FontStyle="Oblique" Grid.Column="1" Margin="20,0,10,0" />
+                   FontStyle="Oblique" Grid.Column="1" Margin="20,0,10,0" FontFamily="Unispace" />
         </Grid>
 
         

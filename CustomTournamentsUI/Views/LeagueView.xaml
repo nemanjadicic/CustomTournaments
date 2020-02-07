@@ -14,14 +14,14 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="3.3*" />
+                <ColumnDefinition Width="2.8*" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Tournament:" FontSize="28" TextAlignment="Left" Margin="0,0,20,0"
-                   FontWeight="SemiBold" FontStyle="Oblique" Grid.Column="0"/>
+                   FontWeight="SemiBold" FontStyle="Oblique" Grid.Column="0" FontFamily="Unispace" />
 
             <TextBlock x:Name="TournamentName" FontSize="28" TextAlignment="Left" Foreground="Blue"
-                   FontWeight="SemiBold" FontStyle="Oblique" Grid.Column="1"/>
+                   FontWeight="SemiBold" FontStyle="Oblique" Grid.Column="1" FontFamily="Unispace"/>
 
         </Grid>
 

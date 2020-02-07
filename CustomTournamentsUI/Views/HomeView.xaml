@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CustomTournamentsUI.Views"
-             mc:Ignorable="d" Background="AliceBlue" FontSize="18"
+             mc:Ignorable="d" Background="AliceBlue" FontSize="18" 
              d:DesignHeight="450" d:DesignWidth="800">
     
     <StackPanel>
         <!-- HEADER -->
-        <TextBlock Text="Home" FontSize="36" TextAlignment="Left" 
-                   Margin="0,0,0,80" FontWeight="SemiBold" FontStyle="Oblique"
+        <TextBlock Text="Home" FontSize="32" TextAlignment="Left" 
+                   Margin="0,0,0,80" FontFamily="Unispace" FontStyle="Oblique"
                    Foreground="Blue"/>
 
         

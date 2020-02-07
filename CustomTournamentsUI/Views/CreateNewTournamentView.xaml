@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <!-- HEADER -->
-        <TextBlock Text="Create New Tournament" FontSize="36" TextAlignment="Left" 
+        <TextBlock Text="Create New Tournament" FontSize="32" TextAlignment="Left" FontFamily="Unispace"
                    Grid.Row="0" FontWeight="SemiBold" FontStyle="Oblique" Foreground="Blue"/>
 
         <Grid Grid.Row="1" Margin="0,20,0,0">
