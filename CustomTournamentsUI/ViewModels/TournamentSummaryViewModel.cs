@@ -181,7 +181,7 @@ namespace CustomTournamentsUI.ViewModels
         {
             finishedTournament = selectedTournament;
             finishedTournament.Rounds = SqlDataHandler.GetRoundsByTournament(finishedTournament.Id);
-            finishedTournament.TournamentPrizes = SqlDataHandler.GetPrizesByTournament(finishedTournament.Id);
+            finishedTournament.TournamentPrizes = SqlDataHandler.GetDataByTournament<PrizeModel>(selectedTournament.Id, "dbo.SP_GetPrizesByTournament");
 
 
 

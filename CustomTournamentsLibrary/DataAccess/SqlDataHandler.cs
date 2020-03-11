@@ -237,21 +237,21 @@ namespace CustomTournamentsLibrary.DataAccess
         }
 
 
-
         /// <summary>
-        /// Retrieves all league participant data of the given tournament. List designed for further use
+        /// Retrieves all records of the specific data of the specific Tournament
         /// </summary>
-        /// <param name="tournamentId">Id of the tournament (leage) you want league participants from</param>
-        /// <returns>List of league participants</returns>
-        private static List<LeagueParticipantModel> GetLeagueParticipantsByTournament(int tournamentId)
+        /// <typeparam name="T">Data type you want to retrieve from the DB</typeparam>
+        /// <param name="tournamentId">ID property of the Tournament you want data from</param>
+        /// <param name="storedProcedure">String value of the stored procedure you want to use in this method</param>
+        /// <returns>List of specific data of the specific Tournament</returns>
+        public static List<T> GetDataByTournament<T>(int tournamentId, string storedProcedure)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@TournamentId", tournamentId);
 
             using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
             {
-                return connection.Query<LeagueParticipantModel>
-                    ("dbo.SP_GetLeagueParticipantsByTournament", parameters, commandType: CommandType.StoredProcedure).ToList();
+                return connection.Query<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure).ToList();
             }
         }
 
@@ -291,27 +291,8 @@ namespace CustomTournamentsLibrary.DataAccess
         }
 
 
-
         /// <summary>
-        /// Retrieves all prizes of the specific tournament
-        /// </summary>
-        /// <param name="tournamentId">Id of the tournament you want prizes from</param>
-        /// <returns>List of prizes of the given tournament</returns>
-        public static List<PrizeModel> GetPrizesByTournament(int tournamentId)
-        {
-            DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@TournamentId", tournamentId);
-
-            using (IDbConnection connection = new SqlConnection(DatabaseAccess.GetConnectionString()))
-            {
-                return connection.Query<PrizeModel>("dbo.SP_GetPrizesByTournament", parameters, commandType: CommandType.StoredProcedure).ToList(); ;
-            }
-        }
-
-
-
-        /// <summary>
-        /// Creates a new record of player class in the DB
+        /// Creates a new record of Player class in the DB
         /// </summary>
         /// <param name="player">PlayerModel class object you want to store in the DB</param>
         public static void CreatePlayer(PlayerModel player)
@@ -577,8 +558,10 @@ namespace CustomTournamentsLibrary.DataAccess
 
             if (homeTeam.Score > awayTeam.Score)
             {
-                winner = GetLeagueParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == homeTeam.TeamName);
-                loser = GetLeagueParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == awayTeam.TeamName);
+                winner = GetDataByTournament<LeagueParticipantModel>(game.TournamentId, "dbo.SP_GetLeagueParticipantsByTournament")
+                    .Find(team => team.TeamName == homeTeam.TeamName);
+                loser = GetDataByTournament<LeagueParticipantModel>(game.TournamentId, "dbo.SP_GetLeagueParticipantsByTournament")
+                    .Find(team => team.TeamName == awayTeam.TeamName);
 
                 winner.Victories += 1;
                 winner.Scored += homeTeam.Score;
@@ -592,8 +575,10 @@ namespace CustomTournamentsLibrary.DataAccess
 
             else if (homeTeam.Score == awayTeam.Score)
             {
-                winner = GetLeagueParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == awayTeam.TeamName);
-                loser = GetLeagueParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == homeTeam.TeamName);
+                winner = GetDataByTournament<LeagueParticipantModel>(game.TournamentId, "dbo.SP_GetLeagueParticipantsByTournament")
+                    .Find(team => team.TeamName == awayTeam.TeamName);
+                loser = GetDataByTournament<LeagueParticipantModel>(game.TournamentId, "dbo.SP_GetLeagueParticipantsByTournament")
+                    .Find(team => team.TeamName == homeTeam.TeamName);
 
                 winner.Draws += 1;
                 winner.Scored += awayTeam.Score;
@@ -608,8 +593,10 @@ namespace CustomTournamentsLibrary.DataAccess
 
             else
             {
-                winner = GetLeagueParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == awayTeam.TeamName);
-                loser = GetLeagueParticipantsByTournament(game.TournamentId).Find(team => team.TeamName == homeTeam.TeamName);
+                winner = GetDataByTournament<LeagueParticipantModel>(game.TournamentId, "dbo.SP_GetLeagueParticipantsByTournament")
+                    .Find(team => team.TeamName == awayTeam.TeamName);
+                loser = GetDataByTournament<LeagueParticipantModel>(game.TournamentId, "dbo.SP_GetLeagueParticipantsByTournament")
+                    .Find(team => team.TeamName == homeTeam.TeamName);
 
                 winner.Victories += 1;
                 winner.Scored += awayTeam.Score;
